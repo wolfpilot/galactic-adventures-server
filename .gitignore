@@ -1,0 +1,26 @@
+# IDE auto-generated files
+.idea/
+.vscode
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# NPM
+node_modules
+
+# Cache
+.cache
+
+# Logs
+logs
+*.log
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Output
+/build
+/coverage

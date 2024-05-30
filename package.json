@@ -9,5 +9,11 @@
   },
   "keywords": [],
   "author": "Razvan Negrea",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dotenv-flow": "^4.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
 }

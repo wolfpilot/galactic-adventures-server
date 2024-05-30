@@ -15,6 +15,9 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
+      prettier:
+        specifier: ^3.2.5
+        version: 3.2.5
 
 packages:
 
@@ -41,6 +44,11 @@ packages:
   path-key@3.1.1:
     resolution: {integrity: sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==}
     engines: {node: '>=8'}
+
+  prettier@3.2.5:
+    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
+    engines: {node: '>=14'}
+    hasBin: true
 
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
@@ -76,6 +84,8 @@ snapshots:
   isexe@2.0.0: {}
 
   path-key@3.1.1: {}
+
+  prettier@3.2.5: {}
 
   shebang-command@2.0.0:
     dependencies:

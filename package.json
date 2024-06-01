@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "husky install",
     "build": "npx tsc",
-    "start:dev": "tsx watch src/index.ts",
+    "start:dev": "tsx watch -r tsconfig-paths/register src/index.ts",
     "start:prod": "tsx build/index.js",
     "format": "prettier src/**/*.ts --write",
     "validate": "tsc --noEmit",
@@ -24,11 +24,14 @@
   "author": "Razvan Negrea",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv-flow": "^4.1.0",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "stripe": "^15.8.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
+    "@types/cors": "^2.8.17",
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.13",
@@ -39,6 +42,7 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.5",
     "prettier": "^3.2.5",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.11.0",

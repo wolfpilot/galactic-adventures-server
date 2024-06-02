@@ -7,7 +7,6 @@ import "./env.js"
 
 import express from "express"
 import cors from "cors"
-import Stripe from "stripe"
 
 // Middleware
 import { contentTypeValidator } from "@middleware/contentTypeValidator.js"
@@ -26,6 +25,10 @@ const app = express()
 app.use(requestLogger)
 app.use(debugLogger)
 
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`)
+})
+
 app.use(cors())
 
 // Request validator
@@ -37,41 +40,7 @@ app.patch("/*", contentTypeValidator("application/json"))
 app.use(express.json())
 
 // Routes
-app.get("/config", (_req, res) => {
-  res.send({
-    publishableKey: STRIPE_PUBLIC_KEY,
-  })
-})
-
-app.post("/payment", async (_req, res) => {
-  try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      currency: "eur",
-      amount: 100,
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    })
-
-    return res.send({
-      clientSecret: paymentIntent.client_secret,
-    })
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      return res.status(400).send({
-        error: {
-          message: err.message,
-        },
-      })
-    }
-
-    return res.status(500).send()
-  }
-})
-
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`)
-})
+app.use("/payment", paymentRoutes)
 
 // Error middleware
 app.use(errorValidator)

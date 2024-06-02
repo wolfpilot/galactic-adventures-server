@@ -1,5 +1,9 @@
-import dotenvFlow from "dotenv-flow"
-dotenvFlow.config()
+/**
+ * Provide dotenv module separately so that it gets hoisted as the first import
+ *
+ * @see https://stackoverflow.com/a/74905715
+ */
+import "./env.js"
 
 import express from "express"
 import cors from "cors"

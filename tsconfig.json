@@ -16,6 +16,7 @@
       "*": ["./typings/*"],
       "@root/*": ["./*"],
       "@src/*": ["./src/*"],
+      "@constants/*": ["./src/adapters/constants/*"],
       "@database/*": ["./src/adapters/database/*"],
       "@helpers/*": ["./src/adapters/helpers/*"],
       "@controllers/*": ["./src/adapters/http/controllers/*"],

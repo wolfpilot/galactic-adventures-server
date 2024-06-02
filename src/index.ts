@@ -11,15 +11,20 @@ import Stripe from "stripe"
 
 // Middleware
 import { contentTypeValidator } from "@middleware/contentTypeValidator.js"
+import { errorValidator } from "@middleware/errorValidator.js"
+import { errorHandler } from "@middleware/errorHandler.js"
+import { debugLogger, requestLogger, errorLogger } from "@middleware/logger.js"
 
-const {
-  PORT = 9000,
-  STRIPE_PUBLIC_KEY = "",
-  STRIPE_SECRET_KEY = "",
-} = process.env
+// Routes
+import paymentRoutes from "@routes/payment.routes.js"
+
+const { PORT = 9000 } = process.env
 
 const app = express()
-const stripe = new Stripe(STRIPE_SECRET_KEY)
+
+// Logging middlware
+app.use(requestLogger)
+app.use(debugLogger)
 
 app.use(cors())
 
@@ -67,3 +72,8 @@ app.post("/payment", async (_req, res) => {
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 })
+
+// Error middleware
+app.use(errorValidator)
+app.use(errorHandler)
+app.use(errorLogger)

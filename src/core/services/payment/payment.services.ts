@@ -6,11 +6,16 @@ import { type PaymentGetConfig, type PaymentCreateIntent } from "./types.js"
 // Helper
 import { ServiceError } from "@helpers/errorHelper.js"
 
+// Services
+import { destinationsGetById } from "@services/products/adventures.services.js"
+import { ProductType } from "@entities/products/products.entities.js"
+
 // Setup
 const { STRIPE_PUBLIC_KEY = "", STRIPE_SECRET_KEY = "" } = process.env
 
 const stripe = new Stripe(STRIPE_SECRET_KEY)
 
+// Utils
 export const paymentGetConfig: PaymentGetConfig = async () => {
   return STRIPE_PUBLIC_KEY
     ? Promise.resolve({
@@ -26,15 +31,25 @@ export const paymentCreateIntent: PaymentCreateIntent = async ({
   productId,
 }) => {
   try {
+    const product =
+      productType === ProductType.adventure
+        ? await destinationsGetById({ id: productId })
+        : null
+
+    if (!product) {
+      return Promise.reject(new ServiceError("Unhandled"))
+    }
+
     const paymentIntent = await stripe.paymentIntents.create({
+      automatic_payment_methods: {
+        enabled: true,
+      },
       currency: "eur",
-      amount: 100,
+      amount: product.price * 100,
+      description: product.description,
       metadata: {
         productId,
         productType,
-      },
-      automatic_payment_methods: {
-        enabled: true,
       },
     })
 

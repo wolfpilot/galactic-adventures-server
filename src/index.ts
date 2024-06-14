@@ -15,7 +15,7 @@ import { errorHandler } from "@middleware/errorHandler.js"
 import { debugLogger, requestLogger, errorLogger } from "@middleware/logger.js"
 
 // Routes
-import paymentRoutes from "@routes/payment.routes.js"
+import routes from "@routes/index.routes.js"
 
 const { PORT = 9000 } = process.env
 
@@ -40,7 +40,7 @@ app.patch("/*", contentTypeValidator("application/json"))
 app.use(express.json())
 
 // Routes
-app.use("/payment", paymentRoutes)
+app.use("/", routes)
 
 // Error middleware
 app.use(errorValidator)

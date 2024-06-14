@@ -22,7 +22,7 @@
       "@controllers/*": ["./src/adapters/http/controllers/*"],
       "@middleware/*": ["./src/adapters/http/middleware/*"],
       "@routes/*": ["./src/adapters/http/routes/*"],
-      "@entity/*": ["./src/core/entity/*"],
+      "@entities/*": ["src/core/entities/*"],
       "@migration/*": ["./src/core/migration/*"],
       "@ports/*": ["./src/core/ports/*"],
       "@services/*": ["./src/core/services/*"]

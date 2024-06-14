@@ -1,7 +1,7 @@
 import Stripe from "stripe"
 
 // Types
-import { type GetConfig, type CreatePayment } from "./types.js"
+import { type PaymentGetConfig, type PaymentCreateIntent } from "./types.js"
 
 // Helper
 import { ServiceError } from "@helpers/errorHelper.js"
@@ -11,17 +11,28 @@ const { STRIPE_PUBLIC_KEY = "", STRIPE_SECRET_KEY = "" } = process.env
 
 const stripe = new Stripe(STRIPE_SECRET_KEY)
 
-export const getConfig: GetConfig = async () => {
-  return Promise.resolve({
-    publishableKey: STRIPE_PUBLIC_KEY,
-  })
+export const paymentGetConfig: PaymentGetConfig = async () => {
+  return STRIPE_PUBLIC_KEY
+    ? Promise.resolve({
+        publishableKey: STRIPE_PUBLIC_KEY,
+      })
+    : Promise.reject({
+        publishableKey: null,
+      })
 }
 
-export const createPayment: CreatePayment = async () => {
+export const paymentCreateIntent: PaymentCreateIntent = async ({
+  productType,
+  productId,
+}) => {
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       currency: "eur",
       amount: 100,
+      metadata: {
+        productId,
+        productType,
+      },
       automatic_payment_methods: {
         enabled: true,
       },
@@ -30,9 +41,9 @@ export const createPayment: CreatePayment = async () => {
     return Promise.resolve({
       clientSecret: paymentIntent.client_secret,
     })
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      return Promise.reject(err)
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return Promise.reject(error)
     }
 
     return Promise.reject(new ServiceError("Unhandled"))

@@ -8,5 +8,5 @@ export const contentTypeValidator =
   (req: Request, _res: Response, next: NextFunction): void => {
     if (req.is(type)) return next()
 
-    next(new HttpError("BadRequest"))
+    next(new HttpError("UnsupportedMediaType"))
   }

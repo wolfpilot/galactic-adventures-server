@@ -1,25 +1,9 @@
-import { type Request, type Response, type NextFunction } from "express"
+import { type Request, type NextFunction } from "express"
 
 // Types
+import { type ControllerResponse } from "../types.js"
 import { ProductType } from "@entities/products/products.entities.js"
 
-// Helpers
-import { HttpError } from "@helpers/errorHelper.js"
-
-// Base
-export type ControllerError = HttpError
-
-export interface ControllerSuccess<T = void> {
-  ok: boolean
-  message?: string
-  data?: T
-}
-
-export type ControllerResponse<T = void> = Response<
-  ControllerSuccess<T> | ControllerError
->
-
-// Functions
 export type PaymentGetConfigResponse = ControllerResponse<{
   publishableKey: string
 }>

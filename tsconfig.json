@@ -13,9 +13,19 @@
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
     "paths": {
-      "*": ["typings/*"],
+      "*": ["./typings/*"],
       "@root/*": ["./*"],
-      "@src/*": ["src/*"]
+      "@src/*": ["./src/*"],
+      "@constants/*": ["./src/adapters/constants/*"],
+      "@database/*": ["./src/adapters/database/*"],
+      "@helpers/*": ["./src/adapters/helpers/*"],
+      "@controllers/*": ["./src/adapters/http/controllers/*"],
+      "@middleware/*": ["./src/adapters/http/middleware/*"],
+      "@routes/*": ["./src/adapters/http/routes/*"],
+      "@entities/*": ["src/core/entities/*"],
+      "@migration/*": ["./src/core/migration/*"],
+      "@ports/*": ["./src/core/ports/*"],
+      "@services/*": ["./src/core/services/*"]
     },
 
     /* JavaScript Support */
@@ -23,7 +33,7 @@
     "checkJs": true,
 
     /* Emit */
-    "outDir": "./build",
+    "outDir": "./build/",
     "sourceMap": true,
     "preserveConstEnums": true,
     "removeComments": false,

@@ -1,6 +1,6 @@
 // Types
 import { ProductType } from "@entities/products/products.entities.js"
-import { type PaymentGetConfig, type PaymentCreateIntent } from "./types.js"
+import type { PaymentGetConfig, PaymentCreateIntent } from "./types.js"
 
 // Services
 import * as paymentServices from "@services/payment/payment.services.js"

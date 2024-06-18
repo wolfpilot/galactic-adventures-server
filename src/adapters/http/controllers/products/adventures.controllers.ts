@@ -1,5 +1,5 @@
 // Types
-import { type DestinationsGetAll, type DestinationsGetById } from "./types.js"
+import type { DestinationsGetAll, DestinationsGetById } from "./types.js"
 
 // Services
 import * as destinationsServices from "@services/products/adventures.services.js"

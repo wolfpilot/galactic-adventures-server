@@ -1,7 +1,7 @@
-import { type Request, type NextFunction } from "express"
+import type { Request, NextFunction } from "express"
 
 // Types
-import { type ControllerResponse } from "../types.js"
+import type { ControllerResponse } from "../types.js"
 import { ProductType } from "@entities/products/products.entities.js"
 
 export type PaymentGetConfigResponse = ControllerResponse<{

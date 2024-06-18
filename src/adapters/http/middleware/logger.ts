@@ -1,4 +1,4 @@
-import { type Request, type Response } from "express"
+import type { Request, Response } from "express"
 import expressWinston, { type BaseLoggerOptions } from "express-winston"
 import winston from "winston"
 import DailyRotateFile from "winston-daily-rotate-file"

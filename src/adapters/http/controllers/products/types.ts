@@ -1,8 +1,8 @@
-import { type Request, type NextFunction } from "express"
+import type { Request, NextFunction } from "express"
 
 // Types
-import { type ControllerResponse } from "../types.js"
-import { type Destination } from "@entities/products/adventures.entities.js"
+import type { ControllerResponse } from "../types.js"
+import type { Destination } from "@entities/products/adventures.entities.js"
 
 // Destinations
 export type DestinationsGetAllResponse = ControllerResponse<{

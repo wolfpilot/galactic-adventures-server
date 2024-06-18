@@ -1,4 +1,4 @@
-import { type Response } from "express"
+import type { Response } from "express"
 
 // Helpers
 import { HttpError } from "@helpers/errorHelper.js"

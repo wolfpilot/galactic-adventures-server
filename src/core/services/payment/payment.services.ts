@@ -1,7 +1,7 @@
 import Stripe from "stripe"
 
 // Types
-import { type PaymentGetConfig, type PaymentCreateIntent } from "./types.js"
+import type { PaymentGetConfig, PaymentCreateIntent } from "./types.js"
 
 // Helper
 import { ServiceError } from "@helpers/errorHelper.js"

@@ -1,5 +1,5 @@
 // Types
-import { type Destination } from "@entities/products/adventures.entities.js"
+import type { Destination } from "@entities/products/adventures.entities.js"
 
 export type DestinationsGetAll = () => Promise<Destination[] | null>
 

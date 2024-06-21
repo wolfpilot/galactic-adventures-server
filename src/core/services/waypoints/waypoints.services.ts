@@ -43,7 +43,7 @@ export const waypointsGetById: WaypointsGetById = async ({ id }) => {
     if (waypointError) {
       const parsedError = parsePgError(waypointError)
 
-      return parsedError.reason === "NotFound"
+      return parsedError.cause === "NotFound"
         ? Promise.resolve(null)
         : Promise.reject(parsedError)
     }

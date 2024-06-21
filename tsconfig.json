@@ -25,7 +25,9 @@
       "@entities/*": ["src/core/entities/*"],
       "@migration/*": ["./src/core/migration/*"],
       "@ports/*": ["./src/core/ports/*"],
-      "@services/*": ["./src/core/services/*"]
+      "@services/*": ["./src/core/services/*"],
+      "@constants/*": ["./src/lib/constants/*"],
+      "@helpers/*": ["./src/lib/helpers/*"]
     },
 
     /* JavaScript Support */

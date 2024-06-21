@@ -82,7 +82,7 @@ export const waypointsGetDetails: WaypointsGetDetails = async ({
     if (error) {
       const parsedError = parsePgError(error)
 
-      return parsedError.reason === "NotFound"
+      return parsedError.cause === "NotFound"
         ? Promise.resolve(null)
         : Promise.reject(parsedError)
     }

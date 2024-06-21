@@ -36,7 +36,7 @@ export const adventuresGetById: AdventuresGetById = async ({ id }) => {
     if (adventureError) {
       const parsedError = parsePgError(adventureError)
 
-      return parsedError.reason === "NotFound"
+      return parsedError.cause === "NotFound"
         ? Promise.resolve(null)
         : Promise.reject(parsedError)
     }

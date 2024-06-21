@@ -1,28 +1,23 @@
+// Types
+import type { GenericErrors } from "./errors.js"
+
 export const SERVICE_ERROR_NAME = "ServiceError"
 
-export enum ServiceErrorReasons {
+export enum ServiceErrorCauses {
   NotFound = "NotFound",
   Unhandled = "Unhandled",
 }
 
-export interface ServiceError {
-  reason: ServiceErrorReasons
-  message: string
-}
-
-export type ServiceErrors = Record<
-  keyof typeof ServiceErrorReasons,
-  ServiceError
->
+export type ServiceErrors = GenericErrors<ServiceErrorCauses>
 
 export const serviceErrors: ServiceErrors = {
   NotFound: {
-    reason: ServiceErrorReasons.NotFound,
+    cause: ServiceErrorCauses.NotFound,
     message:
       "The requested operation failed because a resource associated with the request could not be found.",
   },
   Unhandled: {
-    reason: ServiceErrorReasons.Unhandled,
+    cause: ServiceErrorCauses.Unhandled,
     message: "The request failed due to an internal error.",
   },
 }

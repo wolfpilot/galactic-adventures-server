@@ -4,12 +4,12 @@ import { CustomError } from "ts-custom-error"
 import { HttpStatusNames, httpErrors } from "@constants/errors/httpErrors.js"
 import {
   VALIDATION_ERROR_NAME,
-  ValidationErrorReasons,
+  ValidationErrorCauses,
   validationErrors,
 } from "@constants/errors/validationErrors.js"
 import {
   SERVICE_ERROR_NAME,
-  ServiceErrorReasons,
+  ServiceErrorCauses,
   serviceErrors,
 } from "@constants/errors/serviceErrors.js"
 
@@ -24,8 +24,8 @@ import {
 export class HttpError extends CustomError {
   public ok: boolean
 
-  constructor(name: keyof typeof HttpStatusNames, message?: string) {
-    const code = httpErrors[name]
+  constructor(cause: keyof typeof HttpStatusNames, message?: string) {
+    const err = httpErrors[cause]
 
     super()
 
@@ -35,20 +35,18 @@ export class HttpError extends CustomError {
      * @see https://github.com/adriengibrat/ts-custom-error/issues/53#issuecomment-679403993
      */
     Object.defineProperty(this, "name", {
-      value: code.name || httpErrors.InternalServerError.name,
+      value: err.name || httpErrors.InternalServerError.name,
     })
 
     this.ok = false
     this.message =
-      message || code.message || httpErrors.InternalServerError.message
+      message || err.message || httpErrors.InternalServerError.message
   }
 }
 
 export class ValidationError extends CustomError {
-  public reason: keyof typeof ValidationErrorReasons
-
-  constructor(reason: keyof typeof ValidationErrorReasons, message?: string) {
-    const errorType = validationErrors[reason]
+  constructor(cause: keyof typeof ValidationErrorCauses, message?: string) {
+    const err = validationErrors[cause]
 
     super()
 
@@ -56,18 +54,14 @@ export class ValidationError extends CustomError {
       value: VALIDATION_ERROR_NAME,
     })
 
-    this.reason =
-      reason || errorType.reason || validationErrors.Unhandled.reason
-    this.message =
-      message || errorType.message || validationErrors.Unhandled.message
+    this.cause = cause || err.cause || validationErrors.Unhandled.cause
+    this.message = message || err.message || validationErrors.Unhandled.message
   }
 }
 
 export class ServiceError extends CustomError {
-  public reason: keyof typeof ServiceErrorReasons
-
-  constructor(reason: keyof typeof ServiceErrorReasons, message?: string) {
-    const errorType = serviceErrors[reason]
+  constructor(cause: keyof typeof ServiceErrorCauses, message?: string) {
+    const err = serviceErrors[cause]
 
     super()
 
@@ -75,8 +69,7 @@ export class ServiceError extends CustomError {
       value: SERVICE_ERROR_NAME,
     })
 
-    this.reason = reason || errorType.reason || serviceErrors.Unhandled.reason
-    this.message =
-      message || errorType.message || serviceErrors.Unhandled.message
+    this.cause = cause || err.cause || serviceErrors.Unhandled.cause
+    this.message = message || err.message || serviceErrors.Unhandled.message
   }
 }

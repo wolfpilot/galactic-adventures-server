@@ -5,7 +5,6 @@ import * as adventuresController from "@controllers/products/adventures.controll
 
 const router = express.Router()
 
-router.get("/", adventuresController.destinationsGetAll)
-router.get("/:id", adventuresController.destinationsGetById)
+router.get("/:id", adventuresController.adventuresGetById)
 
 export default router

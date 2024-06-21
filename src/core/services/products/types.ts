@@ -1,10 +1,8 @@
 // Types
-import type { Destination } from "@entities/products/adventures.entities.js"
+import type { Adventure } from "@entities/products/adventures.entities.js"
 
-export type DestinationsGetAll = () => Promise<Destination[] | null>
-
-export type DestinationsGetById = ({
+export type AdventuresGetById = ({
   id,
 }: {
   id: number
-}) => Promise<Destination | null>
+}) => Promise<Adventure | null>

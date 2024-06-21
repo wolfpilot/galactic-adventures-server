@@ -1,13 +1,13 @@
 // Types
-import type { AdventuresGetById } from "./types.js"
+import type { WaypointsGetById } from "./types.js"
 
 // Services
-import * as adventuresServices from "@services/products/adventures.services.js"
+import * as waypointsServices from "@services/waypoints/waypoints.services.js"
 
 // Helpers
 import { HttpError } from "@helpers/errorHelper.js"
 
-export const adventuresGetById: AdventuresGetById = async (req, res, next) => {
+export const waypointsGetById: WaypointsGetById = async (req, res, next) => {
   const { id } = req.params
 
   const parsedId = parseInt(id, 10)
@@ -17,18 +17,16 @@ export const adventuresGetById: AdventuresGetById = async (req, res, next) => {
   }
 
   try {
-    const adventure = await adventuresServices.adventuresGetById({
-      id: parsedId,
-    })
+    const waypoint = await waypointsServices.waypointsGetById({ id: parsedId })
 
-    if (!adventure) {
+    if (!waypoint) {
       return next(new HttpError("NotFound"))
     }
 
     return res.status(200).json({
       ok: true,
       data: {
-        adventure,
+        waypoint,
       },
     })
   } catch (error: unknown) {

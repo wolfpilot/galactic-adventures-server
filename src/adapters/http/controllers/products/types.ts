@@ -2,28 +2,17 @@ import type { Request, NextFunction } from "express"
 
 // Types
 import type { ControllerResponse } from "../types.js"
-import type { Destination } from "@entities/products/adventures.entities.js"
+import type { Adventure } from "@entities/products/adventures.entities.js"
 
-// Destinations
-export type DestinationsGetAllResponse = ControllerResponse<{
-  destinations: Destination[] | null
+export type AdventuresGetByIdRequest = Request<{
+  id: string
+}>
+export type AdventuresGetByIdResponse = ControllerResponse<{
+  adventure: Adventure | null
 }>
 
-export type DestinationsGetAll = (
-  req: Request,
-  res: DestinationsGetAllResponse,
+export type AdventuresGetById = (
+  req: AdventuresGetByIdRequest,
+  res: AdventuresGetByIdResponse,
   next: NextFunction
-) => Promise<DestinationsGetAllResponse | void>
-
-export type DestinationsGetByIdRequest = Request<{
-  id: number
-}>
-export type DestinationsGetByIdResponse = ControllerResponse<{
-  destination: Destination | null
-}>
-
-export type DestinationsGetById = (
-  req: DestinationsGetByIdRequest,
-  res: DestinationsGetByIdResponse,
-  next: NextFunction
-) => Promise<DestinationsGetByIdResponse | void>
+) => Promise<AdventuresGetByIdResponse | void>

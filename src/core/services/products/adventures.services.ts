@@ -1,49 +1,57 @@
 // Types
-import type { DestinationsGetAll, DestinationsGetById } from "./types.js"
+import type { AdventuresGetById } from "./types.js"
 
 // Database
 import { supabase } from "@database/dataSource.js"
 
+// Services
+import { waypointsGetById } from "@services/waypoints/waypoints.services.js"
+
 // Helper
 import { ServiceError } from "@helpers/errorHelper.js"
+import { parsePgError } from "@services/helpers/serviceError.helpers.js"
 
-export const destinationsGetAll: DestinationsGetAll = async () => {
+export const adventuresGetById: AdventuresGetById = async ({ id }) => {
   try {
-    const { error, data } = await supabase
-      .from("destinations")
-      .select(`*, systems("*")`)
-      .order("id")
-
-    if (error) {
-      console.error(error)
-
-      return Promise.reject(new ServiceError("Unhandled"))
-    }
-
-    return Promise.resolve(data)
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return Promise.reject(error)
-    }
-
-    return Promise.reject(new ServiceError("Unhandled"))
-  }
-}
-
-export const destinationsGetById: DestinationsGetById = async ({ id }) => {
-  try {
-    const { error, data } = await supabase
-      .from("destinations")
-      .select(`*, systems("*")`)
+    const { error: adventureError, data: adventureData } = await supabase
+      .from("prd_adventures")
+      .select(
+        `
+          waypoint_id,
+          description,
+          price
+        `
+      )
       .eq("id", id)
       .single()
 
-    if (error) {
-      console.error(error)
+    if (adventureError) {
+      const parsedError = parsePgError(adventureError)
 
-      return Promise.reject(new ServiceError("Unhandled"))
+      return parsedError.reason === "NotFound"
+        ? Promise.resolve(null)
+        : Promise.reject(parsedError)
     }
-    return Promise.resolve(data)
+
+    const { waypoint_id, ...otherAdventureData } = adventureData
+
+    const waypointBaseData = await waypointsGetById({
+      id: waypoint_id,
+    })
+
+    if (!waypointBaseData) {
+      return Promise.resolve(null)
+    }
+
+    // Parse data
+    const payload = {
+      ...waypointBaseData,
+      adventure: {
+        ...otherAdventureData,
+      },
+    }
+
+    return Promise.resolve(payload)
   } catch (error: unknown) {
     if (error instanceof Error) {
       return Promise.reject(error)

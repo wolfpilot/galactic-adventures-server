@@ -7,7 +7,7 @@ import type { PaymentGetConfig, PaymentCreateIntent } from "./types.js"
 import { ServiceError } from "@helpers/errorHelper.js"
 
 // Services
-import { destinationsGetById } from "@services/products/adventures.services.js"
+import { adventuresGetById } from "@services/products/adventures.services.js"
 import { ProductType } from "@entities/products/products.entities.js"
 
 // Setup
@@ -33,7 +33,7 @@ export const paymentCreateIntent: PaymentCreateIntent = async ({
   try {
     const product =
       productType === ProductType.adventure
-        ? await destinationsGetById({ id: productId })
+        ? await adventuresGetById({ id: productId })
         : null
 
     if (!product) {
@@ -45,8 +45,8 @@ export const paymentCreateIntent: PaymentCreateIntent = async ({
         enabled: true,
       },
       currency: "eur",
-      amount: product.price * 100,
-      description: product.description,
+      amount: product.adventure.price * 100,
+      description: `Payment for ${productType}: ${product.name}.`,
       metadata: {
         productId,
         productType,

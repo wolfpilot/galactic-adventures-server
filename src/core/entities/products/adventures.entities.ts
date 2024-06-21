@@ -1,19 +1,10 @@
-// Destination
-export enum DestinationCategory {
-  "planet",
-  "satellite",
-  "asteroid",
-  "comet",
-  "ring",
-  "station",
-}
+// Types
+import type { DatabaseTables } from "@entities/database.entities.js"
+import type { Waypoint } from "@entities/waypoints/waypoints.entities.js"
 
-export interface Destination {
-  id: number
-  name: string
-  code: string
-  category: DestinationCategory
-  description: string
-  price: number
-  isDefault: boolean
+export type AdventuresRow = DatabaseTables["prd_adventures"]["Row"]
+export type AdventureSubtypes = Pick<AdventuresRow, "description" | "price">
+
+export type Adventure = Waypoint & {
+  adventure: AdventureSubtypes
 }

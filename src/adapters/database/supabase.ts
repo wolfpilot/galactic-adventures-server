@@ -58,17 +58,17 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          update_at: string | null
+          updated_at: string | null
         }
         Insert: {
           created_at?: string
           id?: number
-          update_at?: string | null
+          updated_at?: string | null
         }
         Update: {
           created_at?: string
           id?: number
-          update_at?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -485,16 +485,22 @@ export type Database = {
       }
       waypoints_data_source: {
         Row: {
+          created_at: string | null
           id: number
           table_name: Database["public"]["Enums"]["WaypointTableName"]
+          updated_at: string | null
         }
         Insert: {
+          created_at?: string | null
           id?: number
           table_name: Database["public"]["Enums"]["WaypointTableName"]
+          updated_at?: string | null
         }
         Update: {
+          created_at?: string | null
           id?: number
           table_name?: Database["public"]["Enums"]["WaypointTableName"]
+          updated_at?: string | null
         }
         Relationships: []
       }

@@ -441,7 +441,6 @@ export type Database = {
           code: string
           created_at: string | null
           id: number
-          is_destination: boolean
           name: string
           parent_id: number | null
           source_id: number | null
@@ -452,7 +451,6 @@ export type Database = {
           code: string
           created_at?: string | null
           id?: number
-          is_destination?: boolean
           name: string
           parent_id?: number | null
           source_id?: number | null
@@ -463,7 +461,6 @@ export type Database = {
           code?: string
           created_at?: string | null
           id?: number
-          is_destination?: boolean
           name?: string
           parent_id?: number | null
           source_id?: number | null

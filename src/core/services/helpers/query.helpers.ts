@@ -1,6 +1,6 @@
 // Types
 import type { WaypointTableName } from "@entities/database.entities.js"
-import type { WaypointSubtypes } from "@entities/waypoints/waypoints.entities.js"
+import type { WaypointDetails } from "@entities/waypoints/waypoints.entities.js"
 
 // Database
 import { supabase } from "@database/dataSource.js"
@@ -14,7 +14,7 @@ type WaypointsGetDetails = ({
 }: {
   id: number
   tableName: WaypointTableName
-}) => Promise<WaypointSubtypes | null>
+}) => Promise<WaypointDetails | null>
 
 const generateDetailsQuery = (tableName: WaypointTableName) => {
   switch (tableName) {
@@ -82,7 +82,7 @@ export const waypointsGetDetails: WaypointsGetDetails = async ({
         : Promise.reject(parsedError)
     }
 
-    const payload = data as unknown as WaypointSubtypes
+    const payload = data as unknown as WaypointDetails
 
     return Promise.resolve(payload)
   } catch (error: unknown) {

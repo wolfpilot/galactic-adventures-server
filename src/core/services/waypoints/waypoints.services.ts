@@ -27,11 +27,18 @@ export const waypointsGetById: WaypointsGetById = async ({ id }) => {
           code,
           name,
           category,
-          is_destination,
-          source_table:waypoints_data_source(table_name)
+          source_table:waypoints_data_source(
+            table_name
+          ),
+          adventure:prd_adventures!prd_adventures_waypoint_id_fkey(
+            id,
+            description,
+            price
+          )
         `
       )
       .or(`id.eq.${id}, parent_id.eq.${id}`)
+      .order("id", { ascending: true })
 
     if (waypointError) {
       const parsedError = parsePgError(waypointError)
@@ -48,17 +55,13 @@ export const waypointsGetById: WaypointsGetById = async ({ id }) => {
       return Promise.resolve(null)
     }
 
-    const { source_table, ...otherWaypointData } = targetWaypoint
+    const { source_table, adventure, ...otherWaypointData } = targetWaypoint
 
     // Fetch additional details for target waypoint
     const detailsData = await waypointsGetDetails({
       id,
       tableName: source_table.table_name,
     })
-
-    if (!detailsData) {
-      return Promise.resolve(null)
-    }
 
     // Parse data
     const childrenData = waypointData
@@ -68,12 +71,13 @@ export const waypointsGetById: WaypointsGetById = async ({ id }) => {
         code: item.code,
         name: item.name,
         category: item.category,
-        is_destination: item.is_destination,
+        adventure: item.adventure[0] ?? null,
       }))
 
     const payload = {
       ...otherWaypointData,
       details: detailsData,
+      adventure: adventure[0] ?? null,
       children: childrenData,
     } as WaypointsGetByIdResponse
 

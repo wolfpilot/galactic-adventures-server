@@ -1,14 +1,13 @@
 // Types
 import type {
-  WaypointsRow,
+  WaypointBase,
   Waypoint,
 } from "@entities/waypoints/waypoints.entities.js"
 
+export type WaypointChildData = Omit<WaypointBase, "parent_id">
+
 export type WaypointsGetByIdResponse = Waypoint & {
-  children: Pick<
-    WaypointsRow,
-    "id" | "code" | "name" | "category" | "is_destination"
-  >[]
+  children: WaypointChildData[]
 }
 
 export type WaypointsGetById = ({

@@ -1,36 +1,36 @@
 import type { Database } from "@database/supabase.js"
 
 // Types
+import type { AdventureBase } from "@entities/products/adventures.entities.js"
 import type {
   Supercluster,
-  SuperclusterSubtypes,
+  SuperclusterDetails,
 } from "./superclusters.entities.js"
-import type { Cluster, ClusterSubtypes } from "./clusters.entities.js"
-import type { Galaxy, GalaxySubtypes } from "./galaxies.entities.js"
-import type { Nebula, NebulaSubtypes } from "./nebulae.entities.js"
-import type { System, SystemSubtypes } from "./systems.entities.js"
-import type { Star, StarSubtypes } from "./stars.entities.js"
-import type { Planet, PlanetSubtypes } from "./planets.entities.js"
-import type { Satellite, SatelliteSubtypes } from "./satellites.entities.js"
+import type { Cluster, ClusterDetails } from "./clusters.entities.js"
+import type { Galaxy, GalaxyDetails } from "./galaxies.entities.js"
+import type { Nebula, NebulaDetails } from "./nebulae.entities.js"
+import type { System, SystemDetails } from "./systems.entities.js"
+import type { Star, StarDetails } from "./stars.entities.js"
+import type { Planet, PlanetDetails } from "./planets.entities.js"
+import type { Satellite, SatelliteDetails } from "./satellites.entities.js"
 
 export type WaypointsRow = Database["public"]["Tables"]["waypoints"]["Row"]
-
 export type WaypointBase = Pick<
   WaypointsRow,
-  "id" | "parent_id" | "code" | "name" | "category" | "is_destination"
+  "id" | "parent_id" | "code" | "name" | "category"
 >
 
-export type WaypointSubtypes =
-  | SuperclusterSubtypes
-  | ClusterSubtypes
-  | GalaxySubtypes
-  | NebulaSubtypes
-  | SystemSubtypes
-  | StarSubtypes
-  | PlanetSubtypes
-  | SatelliteSubtypes
+export type WaypointDetails =
+  | SuperclusterDetails
+  | ClusterDetails
+  | GalaxyDetails
+  | NebulaDetails
+  | SystemDetails
+  | StarDetails
+  | PlanetDetails
+  | SatelliteDetails
 
-export type Waypoint =
+export type WaypointTypes =
   | Supercluster
   | Cluster
   | Galaxy
@@ -39,3 +39,7 @@ export type Waypoint =
   | Star
   | Planet
   | Satellite
+
+export type Waypoint = WaypointTypes & {
+  adventure: AdventureBase | null
+}

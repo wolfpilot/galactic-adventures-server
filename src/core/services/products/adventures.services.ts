@@ -24,8 +24,9 @@ export const adventuresGetById: AdventuresGetById = async ({ id }) => {
             code,
             name,
             category,
-            is_destination,
-            source_table:waypoints_data_source(table_name)
+            source_table:waypoints_data_source(
+              table_name
+            )
           )
         `
       )
@@ -53,10 +54,6 @@ export const adventuresGetById: AdventuresGetById = async ({ id }) => {
       id: waypoint.id,
       tableName: source_table.table_name,
     })
-
-    if (!waypointDetailsData) {
-      return Promise.resolve(null)
-    }
 
     // Parse data
     const payload = {

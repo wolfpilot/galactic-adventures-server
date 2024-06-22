@@ -45,8 +45,8 @@ export const paymentCreateIntent: PaymentCreateIntent = async ({
         enabled: true,
       },
       currency: "eur",
-      amount: product.adventure.price * 100,
-      description: `Payment for ${productType}: ${product.name}.`,
+      amount: product.price * 100,
+      description: `Payment for ${productType}: ${product.waypoint.name}.`,
       metadata: {
         productId,
         productType,

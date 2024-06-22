@@ -1,15 +1,13 @@
 // Types
-import type { AdventuresGetById } from "./types.js"
+import type { AdventuresGetById, AdventuresGetByIdResponse } from "./types.js"
 
 // Database
 import { supabase } from "@database/dataSource.js"
 
-// Services
-import { waypointsGetById } from "@services/waypoints/waypoints.services.js"
-
 // Helper
 import { ServiceError } from "@helpers/errorHelper.js"
 import { parsePgError } from "@services/helpers/serviceError.helpers.js"
+import { waypointsGetDetails } from "@services/helpers/query.helpers.js"
 
 export const adventuresGetById: AdventuresGetById = async ({ id }) => {
   try {
@@ -17,9 +15,18 @@ export const adventuresGetById: AdventuresGetById = async ({ id }) => {
       .from("prd_adventures")
       .select(
         `
-          waypoint_id,
+          id,
           description,
-          price
+          price,
+          waypoint:waypoints!prd_adventures_waypoint_id_fkey(
+            id,
+            parent_id,
+            code,
+            name,
+            category,
+            is_destination,
+            source_table:waypoints_data_source(table_name)
+          )
         `
       )
       .eq("id", id)
@@ -33,23 +40,32 @@ export const adventuresGetById: AdventuresGetById = async ({ id }) => {
         : Promise.reject(parsedError)
     }
 
-    const { waypoint_id, ...otherAdventureData } = adventureData
+    const { waypoint, ...otherAdventureData } = adventureData
 
-    const waypointBaseData = await waypointsGetById({
-      id: waypoint_id,
+    if (!waypoint?.source_table) {
+      return Promise.resolve(null)
+    }
+
+    const { source_table, ...otherWaypointData } = waypoint
+
+    // Fetch additional details for target waypoint
+    const waypointDetailsData = await waypointsGetDetails({
+      id: waypoint.id,
+      tableName: source_table.table_name,
     })
 
-    if (!waypointBaseData) {
+    if (!waypointDetailsData) {
       return Promise.resolve(null)
     }
 
     // Parse data
     const payload = {
-      ...waypointBaseData,
-      adventure: {
-        ...otherAdventureData,
+      ...otherAdventureData,
+      waypoint: {
+        ...otherWaypointData,
+        details: waypointDetailsData,
       },
-    }
+    } as AdventuresGetByIdResponse
 
     return Promise.resolve(payload)
   } catch (error: unknown) {

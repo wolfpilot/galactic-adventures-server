@@ -9,68 +9,38 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      destinations: {
-        Row: {
-          category: Database["public"]["Enums"]["WaypointCategory"] | null
-          code: string
-          description: string
-          id: number
-          isDefault: boolean
-          name: string
-          price: number
-        }
-        Insert: {
-          category?: Database["public"]["Enums"]["WaypointCategory"] | null
-          code: string
-          description?: string
-          id?: number
-          isDefault?: boolean
-          name: string
-          price: number
-        }
-        Update: {
-          category?: Database["public"]["Enums"]["WaypointCategory"] | null
-          code?: string
-          description?: string
-          id?: number
-          isDefault?: boolean
-          name?: string
-          price?: number
-        }
-        Relationships: []
-      }
       prd_adventures: {
         Row: {
-          code: string
           created_at: string | null
           description: string
           id: number
           price: number
           updated_at: string | null
+          waypoint_code: string
           waypoint_id: number
         }
         Insert: {
-          code: string
           created_at?: string | null
           description?: string
           id?: number
           price: number
           updated_at?: string | null
+          waypoint_code: string
           waypoint_id: number
         }
         Update: {
-          code?: string
           created_at?: string | null
           description?: string
           id?: number
           price?: number
           updated_at?: string | null
+          waypoint_code?: string
           waypoint_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "prd_adventures_code_fkey"
-            columns: ["code"]
+            foreignKeyName: "prd_adventures_waypoint_code_fkey"
+            columns: ["waypoint_code"]
             isOneToOne: false
             referencedRelation: "waypoints"
             referencedColumns: ["code"]

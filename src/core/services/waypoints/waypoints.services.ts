@@ -7,7 +7,7 @@ import { supabase } from "@database/dataSource.js"
 // Helpers
 import { ServiceError } from "@helpers/errorHelper.js"
 import { parsePgError } from "@services/helpers/serviceError.helpers.js"
-import { waypointsGetDetails } from "./helpers/query.helpers.js"
+import { waypointsGetDetails } from "@services/helpers/query.helpers.js"
 
 /**
  * Getting the waypoint data is achieved in two separate queries:

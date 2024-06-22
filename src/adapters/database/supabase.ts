@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      meta_star_classes: {
+        Row: {
+          chromacity: string | null
+          class: Database["public"]["Enums"]["StarClass"]
+          created_at: string
+          id: number
+          temperature_max_kelvin: number | null
+          temperature_min_kelvin: number | null
+          updated_at: string
+        }
+        Insert: {
+          chromacity?: string | null
+          class: Database["public"]["Enums"]["StarClass"]
+          created_at?: string
+          id?: number
+          temperature_max_kelvin?: number | null
+          temperature_min_kelvin?: number | null
+          updated_at?: string
+        }
+        Update: {
+          chromacity?: string | null
+          class?: Database["public"]["Enums"]["StarClass"]
+          created_at?: string
+          id?: number
+          temperature_max_kelvin?: number | null
+          temperature_min_kelvin?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       prd_adventures: {
         Row: {
           created_at: string | null
@@ -305,7 +335,7 @@ export type Database = {
       }
       way_stars: {
         Row: {
-          class: Database["public"]["Enums"]["StarClass"]
+          class: number
           code: string
           created_at: string
           id: number
@@ -313,7 +343,7 @@ export type Database = {
           waypoint_id: number | null
         }
         Insert: {
-          class: Database["public"]["Enums"]["StarClass"]
+          class: number
           code: string
           created_at?: string
           id?: number
@@ -321,7 +351,7 @@ export type Database = {
           waypoint_id?: number | null
         }
         Update: {
-          class?: Database["public"]["Enums"]["StarClass"]
+          class?: number
           code?: string
           created_at?: string
           id?: number
@@ -329,6 +359,13 @@ export type Database = {
           waypoint_id?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "way_stars_class_fkey"
+            columns: ["class"]
+            isOneToOne: false
+            referencedRelation: "meta_star_classes"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "way_stars_code_fkey"
             columns: ["code"]

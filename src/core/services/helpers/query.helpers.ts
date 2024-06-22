@@ -41,7 +41,12 @@ const generateDetailsQuery = (tableName: WaypointTableName) => {
       `
     case "way_stars":
       return `
-        class
+        meta_star_class:meta_star_classes!way_stars_class_fkey(
+          class,
+          chromacity,
+          temperature_min_kelvin,
+          temperature_max_kelvin
+        )
       `
     case "way_planets":
       return `

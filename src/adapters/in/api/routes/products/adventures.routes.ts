@@ -1,0 +1,10 @@
+import express from "express"
+
+// Controllers
+import * as adventuresController from "@api/controllers/products/adventures.controllers.js"
+
+const router = express.Router()
+
+router.get("/:id", adventuresController.adventuresGetById)
+
+export default router

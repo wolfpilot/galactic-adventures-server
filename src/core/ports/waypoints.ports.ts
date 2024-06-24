@@ -3,11 +3,11 @@ import type { WaypointTableName } from "@entities/database.entities.js"
 import type {
   WaypointDTO,
   WaypointDetailsDTO,
-} from "@services/dtos/waypoints/waypoint.dtos.js"
+} from "@database/repositories/dtos/waypoints.dtos.js"
 
-export interface IWaypointsService {
-  getWithChildrenById: (id: number) => Promise<WaypointDTO | null>
-  getDetailsByIdAndTable: (
+export interface WaypointsRepositoryPort {
+  findWithChildrenById: (id: number) => Promise<WaypointDTO[]>
+  findDetailsByIdAndTable: (
     id: number,
     tableName: WaypointTableName
   ) => Promise<WaypointDetailsDTO | null>

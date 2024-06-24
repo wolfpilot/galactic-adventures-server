@@ -1,39 +1,41 @@
-import Stripe from "stripe"
-
 // Types
-import type { PaymentGetConfig, PaymentCreateIntent } from "./types.js"
+import { ProductType } from "@ts/products.types.js"
+import type { IPaymentService } from "./types.js"
 
-// Helper
+// Stripe
+import stripe from "@payment/stripeClient.js"
+
+// Ports
+import type { AdventuresRepositoryPort } from "@ports/adventures.ports.js"
+
+// Repositories
+import { AdventuresRepository } from "@database/repositories/adventures.repositories.js"
+
+// Helpers
 import { ServiceError } from "@helpers/errorHelper.js"
 
-// Services
-import { adventuresGetById } from "@services/products/adventures.services.js"
-import { ProductType } from "@entities/products/products.entities.js"
-
 // Setup
-const { STRIPE_PUBLIC_KEY = "", STRIPE_SECRET_KEY = "" } = process.env
+const { STRIPE_PUBLIC_KEY = "" } = process.env
 
-const stripe = new Stripe(STRIPE_SECRET_KEY)
+export class PaymentService implements IPaymentService {
+  private adventuresRepository: AdventuresRepositoryPort
 
-// Utils
-export const paymentGetConfig: PaymentGetConfig = async () => {
-  return STRIPE_PUBLIC_KEY
-    ? Promise.resolve({
-        publishableKey: STRIPE_PUBLIC_KEY,
-      })
-    : Promise.reject({
-        publishableKey: null,
-      })
-}
+  constructor() {
+    this.adventuresRepository = new AdventuresRepository()
+  }
 
-export const paymentCreateIntent: PaymentCreateIntent = async ({
-  productType,
-  productId,
-}) => {
-  try {
+  getConfig() {
+    return STRIPE_PUBLIC_KEY
+      ? Promise.resolve({
+          publishableKey: STRIPE_PUBLIC_KEY,
+        })
+      : Promise.reject(new ServiceError("Unhandled"))
+  }
+
+  async createIntent(id: number, type: ProductType) {
     const product =
-      productType === ProductType.adventure
-        ? await adventuresGetById({ id: productId })
+      type === ProductType.adventure
+        ? await this.adventuresRepository.findWithWaypointById(id)
         : null
 
     if (!product) {
@@ -46,21 +48,15 @@ export const paymentCreateIntent: PaymentCreateIntent = async ({
       },
       currency: "eur",
       amount: product.price * 100,
-      description: `Payment for ${productType}: ${product.waypoint.name}.`,
+      description: `Payment for ${type}: ${product.id}.`,
       metadata: {
-        productId,
-        productType,
+        id,
+        type,
       },
     })
 
     return Promise.resolve({
       clientSecret: paymentIntent.client_secret,
     })
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return Promise.reject(error)
-    }
-
-    return Promise.reject(new ServiceError("Unhandled"))
   }
 }

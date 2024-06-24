@@ -1,70 +1,40 @@
 // Types
-import type { WaypointsGetById, WaypointsGetByIdResponse } from "./types.js"
+import type { WaypointTableName } from "@entities/database.entities.js"
+import type { WaypointDTO } from "@services/dtos/waypoints/waypoint.dtos.js"
+import type { IWaypointsService } from "./types.js"
 
-// Database
-import { supabase } from "@database/dataSource.js"
+// Ports
+import type { WaypointsRepositoryPort } from "@ports/waypoints.ports.js"
 
-// Helpers
-import { ServiceError } from "@helpers/errorHelper.js"
-import { parsePgError } from "@services/helpers/serviceError.helpers.js"
-import { waypointsGetDetails } from "@services/helpers/query.helpers.js"
+export class WaypointsService implements IWaypointsService {
+  constructor(private waypointsRepository: WaypointsRepositoryPort) {}
 
-/**
- * Getting the waypoint data is achieved in two separate queries:
- *
- * 1. Fetch the base data for {id} waypoint and its direct descendants.
- * 2. Fetch additional details for {id} based on the table name received in step 1.
- */
-export const waypointsGetById: WaypointsGetById = async ({ id }) => {
-  try {
-    // Fetch the base data for target waypoint and its direct descendants
-    const { error: waypointError, data: waypointData } = await supabase
-      .from("waypoints")
-      .select(
-        `
-          id,
-          parent_id,
-          code,
-          name,
-          category,
-          source_table:waypoints_data_source(
-            table_name
-          ),
-          adventure:prd_adventures!prd_adventures_waypoint_id_fkey(
-            id,
-            description,
-            price
-          )
-        `
-      )
-      .or(`id.eq.${id}, parent_id.eq.${id}`)
-      .order("id", { ascending: true })
+  async getWithChildrenById(id: number) {
+    const waypointsData =
+      await this.waypointsRepository.findWithChildrenById(id)
 
-    if (waypointError) {
-      const parsedError = parsePgError(waypointError)
-
-      return parsedError.cause === "NotFound"
-        ? Promise.resolve(null)
-        : Promise.reject(parsedError)
-    }
-
-    // Find the target waypoint data object
-    const targetWaypoint = waypointData.find((item) => item.id === id)
-
-    if (!targetWaypoint?.source_table) {
+    if (!waypointsData) {
       return Promise.resolve(null)
     }
 
-    const { source_table, adventure, ...otherWaypointData } = targetWaypoint
+    // Find the target waypoint data object
+    const targetWaypoint = waypointsData.find((item) => item.id === id)
+
+    if (!targetWaypoint?.data_source) {
+      return Promise.resolve(null)
+    }
+
+    const { data_source, adventure, ...otherWaypointsData } = targetWaypoint
 
     // Fetch additional details for target waypoint
-    const detailsData = await waypointsGetDetails({
-      id,
-      tableName: source_table.table_name,
-    })
+    const targetWaypointDetails =
+      await this.waypointsRepository.findDetailsByIdAndTable(
+        id,
+        data_source.table_name
+      )
 
     // Parse data
-    const childrenData = waypointData
+    const childrenData = waypointsData
       .filter((item) => item.id !== id)
       .map((item) => ({
         id: item.id,
@@ -75,18 +45,16 @@ export const waypointsGetById: WaypointsGetById = async ({ id }) => {
       }))
 
     const payload = {
-      ...otherWaypointData,
-      details: detailsData,
+      ...otherWaypointsData,
+      details: targetWaypointDetails,
       adventure: adventure[0] ?? null,
       children: childrenData,
-    } as WaypointsGetByIdResponse
+    } as WaypointDTO
 
     return Promise.resolve(payload)
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return Promise.reject(error)
-    }
+  }
 
-    return Promise.reject(new ServiceError("Unhandled"))
+  async getDetailsByIdAndTable(id: number, tableName: WaypointTableName) {
+    return await this.waypointsRepository.findDetailsByIdAndTable(id, tableName)
   }
 }

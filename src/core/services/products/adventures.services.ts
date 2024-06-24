@@ -1,59 +1,40 @@
 // Types
-import type { AdventuresGetById, AdventuresGetByIdResponse } from "./types.js"
+import type { AdventuresRepositoryPort } from "@ports/adventures.ports.js"
+import type { WaypointsRepositoryPort } from "@ports/waypoints.ports.js"
+import type { IAdventuresService } from "./types.js"
 
-// Database
-import { supabase } from "@database/dataSource.js"
+// Repositories
+import { WaypointsRepository } from "@database/repositories/waypoints.repositories.js"
 
-// Helper
-import { ServiceError } from "@helpers/errorHelper.js"
-import { parsePgError } from "@services/helpers/serviceError.helpers.js"
-import { waypointsGetDetails } from "@services/helpers/query.helpers.js"
+export class AdventuresService implements IAdventuresService {
+  private waypointsRespository: WaypointsRepositoryPort
 
-export const adventuresGetById: AdventuresGetById = async ({ id }) => {
-  try {
-    const { error: adventureError, data: adventureData } = await supabase
-      .from("prd_adventures")
-      .select(
-        `
-          id,
-          description,
-          price,
-          waypoint:waypoints!prd_adventures_waypoint_id_fkey(
-            id,
-            parent_id,
-            code,
-            name,
-            category,
-            source_table:waypoints_data_source(
-              table_name
-            )
-          )
-        `
-      )
-      .eq("id", id)
-      .single()
+  constructor(private adventuresRepository: AdventuresRepositoryPort) {
+    this.waypointsRespository = new WaypointsRepository()
+  }
 
-    if (adventureError) {
-      const parsedError = parsePgError(adventureError)
+  async getWithWaypointById(id: number) {
+    const adventureData =
+      await this.adventuresRepository.findWithWaypointById(id)
 
-      return parsedError.cause === "NotFound"
-        ? Promise.resolve(null)
-        : Promise.reject(parsedError)
+    if (!adventureData) {
+      return Promise.resolve(null)
     }
 
     const { waypoint, ...otherAdventureData } = adventureData
 
-    if (!waypoint?.source_table) {
+    if (!waypoint?.data_source) {
       return Promise.resolve(null)
     }
 
-    const { source_table, ...otherWaypointData } = waypoint
+    const { data_source, ...otherWaypointData } = waypoint
 
     // Fetch additional details for target waypoint
-    const waypointDetailsData = await waypointsGetDetails({
-      id: waypoint.id,
-      tableName: source_table.table_name,
-    })
+    const waypointDetailsData =
+      await this.waypointsRespository.findDetailsByIdAndTable(
+        waypoint.id,
+        data_source.table_name
+      )
 
     // Parse data
     const payload = {
@@ -62,14 +43,8 @@ export const adventuresGetById: AdventuresGetById = async ({ id }) => {
         ...otherWaypointData,
         details: waypointDetailsData,
       },
-    } as AdventuresGetByIdResponse
-
-    return Promise.resolve(payload)
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return Promise.reject(error)
     }
 
-    return Promise.reject(new ServiceError("Unhandled"))
+    return Promise.resolve(payload)
   }
 }

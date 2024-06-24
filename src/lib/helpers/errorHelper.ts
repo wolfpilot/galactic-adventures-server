@@ -12,6 +12,11 @@ import {
   ServiceErrorCauses,
   serviceErrors,
 } from "@constants/errors/serviceErrors.js"
+import {
+  REPOSITORY_ERROR_NAME,
+  RepositoryErrorCauses,
+  repositoryErrors,
+} from "@constants/errors/repositoryErrors.js"
 
 /**
  * Default is set to 500 Internal Server Error.
@@ -71,5 +76,20 @@ export class ServiceError extends CustomError {
 
     this.cause = cause || err.cause || serviceErrors.Unhandled.cause
     this.message = message || err.message || serviceErrors.Unhandled.message
+  }
+}
+
+export class RepositoryError extends CustomError {
+  constructor(cause: keyof typeof RepositoryErrorCauses, message?: string) {
+    const err = repositoryErrors[cause]
+
+    super()
+
+    Object.defineProperty(this, "name", {
+      value: REPOSITORY_ERROR_NAME,
+    })
+
+    this.cause = cause || err.cause || repositoryErrors.Unhandled.cause
+    this.message = message || err.message || repositoryErrors.Unhandled.message
   }
 }

@@ -1,5 +1,5 @@
 // Types
-import type { Enums } from "@database/supabase.js"
+import type { Enums } from "@database/supabase.schema.js"
 
 // Enums
 export type GalaxyShape = Enums<"GalaxyShape">

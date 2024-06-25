@@ -1,5 +1,5 @@
 // Types
-import type { Tables } from "@database/supabase.js"
+import type { Tables } from "@database/supabase.schema.js"
 
 export type Waypoint = Tables<"waypoints">
 export type WaypointDataSources = Tables<"waypoints_data_source">

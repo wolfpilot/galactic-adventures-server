@@ -1,16 +1,16 @@
 // Types
 import type { AdventuresRepositoryPort } from "@ports/adventures.ports.js"
 import type { WaypointsRepositoryPort } from "@ports/waypoints.ports.js"
-import type { IAdventuresService } from "./types.js"
+import type { AdventuresService } from "./types.js"
 
 // Repositories
 import { WaypointsRepository } from "@database/repositories/waypoints.repositories.js"
 
-export class AdventuresService implements IAdventuresService {
-  private waypointsRespository: WaypointsRepositoryPort
+export class AdventuresServiceImpl implements AdventuresService {
+  private waypointsRepository: WaypointsRepositoryPort
 
   constructor(private adventuresRepository: AdventuresRepositoryPort) {
-    this.waypointsRespository = new WaypointsRepository()
+    this.waypointsRepository = new WaypointsRepository()
   }
 
   async getWithWaypointById(id: number) {
@@ -23,24 +23,22 @@ export class AdventuresService implements IAdventuresService {
 
     const { waypoint, ...otherAdventureData } = adventureData
 
-    if (!waypoint?.data_source) {
+    if (!waypoint) {
       return Promise.resolve(null)
     }
 
-    const { data_source, ...otherWaypointData } = waypoint
-
     // Fetch additional details for target waypoint
     const waypointDetailsData =
-      await this.waypointsRespository.findDetailsByIdAndTable(
+      await this.waypointsRepository.findDetailsByIdAndCat(
         waypoint.id,
-        data_source.table_name
+        waypoint.category
       )
 
     // Parse data
     const payload = {
       ...otherAdventureData,
       waypoint: {
-        ...otherWaypointData,
+        ...waypoint,
         details: waypointDetailsData,
       },
     }

@@ -5,13 +5,13 @@ import type { AdventuresGetById } from "./types.js"
 import { AdventuresRepository } from "@database/repositories/adventures.repositories.js"
 
 // Services
-import { AdventuresService } from "@services/products/adventures.services.js"
+import { AdventuresServiceImpl } from "@services/products/adventures.services.js"
 
 // Helpers
 import { HttpError } from "@helpers/errorHelper.js"
 
 const adventuresRepository = new AdventuresRepository()
-const adventuresService = new AdventuresService(adventuresRepository)
+const adventuresService = new AdventuresServiceImpl(adventuresRepository)
 
 export const adventuresGetById: AdventuresGetById = async (req, res, next) => {
   const { id } = req.params

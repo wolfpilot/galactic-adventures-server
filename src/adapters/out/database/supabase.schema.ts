@@ -480,7 +480,6 @@ export type Database = {
           id: number
           name: string
           parent_id: number | null
-          source_id: number
           updated_at: string | null
         }
         Insert: {
@@ -490,7 +489,6 @@ export type Database = {
           id?: number
           name: string
           parent_id?: number | null
-          source_id: number
           updated_at?: string | null
         }
         Update: {
@@ -500,7 +498,6 @@ export type Database = {
           id?: number
           name?: string
           parent_id?: number | null
-          source_id?: number
           updated_at?: string | null
         }
         Relationships: [
@@ -511,35 +508,7 @@ export type Database = {
             referencedRelation: "waypoints"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "waypoints_source_id_fkey"
-            columns: ["source_id"]
-            isOneToOne: false
-            referencedRelation: "waypoints_data_source"
-            referencedColumns: ["id"]
-          },
         ]
-      }
-      waypoints_data_source: {
-        Row: {
-          created_at: string | null
-          id: number
-          table_name: Database["public"]["Enums"]["WaypointTableName"]
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: number
-          table_name: Database["public"]["Enums"]["WaypointTableName"]
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: number
-          table_name?: Database["public"]["Enums"]["WaypointTableName"]
-          updated_at?: string | null
-        }
-        Relationships: []
       }
     }
     Views: {
@@ -585,9 +554,6 @@ export type Database = {
         | "Star"
         | "Planet"
         | "Satellite"
-        | "Comet"
-        | "Asteroid"
-        | "Space Station"
       WaypointTableName:
         | "way_superclusters"
         | "way_clusters"

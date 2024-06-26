@@ -1,17 +1,17 @@
 // Types
 import type { WaypointsGetById } from "./types.js"
 
-// Repositories
+// Adapters
 import { WaypointsRepository } from "@database/repositories/waypoints.repositories.js"
 
 // Services
-import { WaypointsService } from "@services/waypoints/waypoints.services.js"
+import { WaypointsServiceImpl } from "@services/waypoints/waypoints.services.js"
 
 // Helpers
 import { HttpError } from "@helpers/errorHelper.js"
 
 const waypointsRepository = new WaypointsRepository()
-const waypointsService = new WaypointsService(waypointsRepository)
+const waypointsService = new WaypointsServiceImpl(waypointsRepository)
 
 export const waypointsGetById: WaypointsGetById = async (req, res, next) => {
   const { id } = req.params

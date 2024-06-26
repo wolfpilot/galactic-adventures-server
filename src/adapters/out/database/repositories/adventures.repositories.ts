@@ -21,10 +21,7 @@ export class AdventuresRepository implements AdventuresRepositoryPort {
             parent_id,
             code,
             name,
-            category,
-            data_source:waypoints_data_source(
-              table_name
-            )
+            category
           )
         `
       )
@@ -37,10 +34,6 @@ export class AdventuresRepository implements AdventuresRepositoryPort {
       return parsedError.cause === "NotFound"
         ? Promise.resolve(null)
         : Promise.reject(parsedError)
-    }
-
-    if (!data?.waypoint?.data_source?.table_name) {
-      return Promise.resolve(null)
     }
 
     return Promise.resolve(data)

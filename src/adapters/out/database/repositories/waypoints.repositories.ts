@@ -1,6 +1,6 @@
 // Types
-import type { WaypointTableName } from "@entities/database.entities.js"
-import type { WaypointDetailsDTO } from "@database/repositories/dtos/waypoints.dtos.js"
+import type { WaypointCategory } from "@entities/database.entities.js"
+import type { WaypointDTO } from "@services/dtos/waypoints/waypoint.dtos.js"
 
 // Database
 import { supabase } from "@database/dataSource.js"
@@ -10,57 +10,31 @@ import type { WaypointsRepositoryPort } from "@ports/waypoints.ports.js"
 
 // Helpers
 import { parsePgError } from "@database/lib/helpers/error.helpers.js"
-
-// Utils
-const generateDetailsQuery = (tableName: WaypointTableName) => {
-  switch (tableName) {
-    case "way_superclusters":
-      return `
-        morphology
-      `
-    case "way_clusters":
-      return `
-        constellations
-      `
-    case "way_galaxies":
-      return `
-        shape
-      `
-    case "way_nebulae":
-      return `
-        type
-      `
-    case "way_systems":
-      return `
-        type,
-        isInhabited
-      `
-    case "way_stars":
-      return `
-        meta_star_class:meta_star_classes!way_stars_class_fkey(
-          class,
-          chromacity,
-          temperature_min_kelvin,
-          temperature_max_kelvin
-        )
-      `
-    case "way_planets":
-      return `
-        size,
-        composition
-      `
-    case "way_satellites":
-      return `
-        composition
-    `
-    default:
-      return null
-  }
-}
+import { getWaypointDetails } from "@database/lib/helpers/query.helpers.js"
 
 export class WaypointsRepository implements WaypointsRepositoryPort {
+  async findDetailsByIdAndCat(id: number, cat: WaypointCategory) {
+    const details = await getWaypointDetails(id, cat)
+
+    if (!details) {
+      return Promise.resolve(null)
+    }
+
+    const { error, data } = details
+
+    if (error) {
+      const parsedError = parsePgError(error)
+
+      return parsedError.cause === "NotFound"
+        ? Promise.resolve(null)
+        : Promise.reject(parsedError)
+    }
+
+    return Promise.resolve(data)
+  }
+
   async findWithChildrenById(id: number) {
-    const { error, data } = await supabase
+    const { error: waypointsError, data: waypointsData } = await supabase
       .from("waypoints")
       .select(
         `
@@ -69,9 +43,6 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
           code,
           name,
           category,
-          data_source:waypoints_data_source(
-            table_name
-          ),
           adventure:prd_adventures!prd_adventures_waypoint_id_fkey(
             id,
             description,
@@ -82,38 +53,51 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
       .or(`id.eq.${id}, parent_id.eq.${id}`)
       .order("id", { ascending: true })
 
-    if (error) {
-      const parsedError = parsePgError(error)
-
-      return parsedError.cause === "NotFound"
-        ? Promise.resolve([])
-        : Promise.reject(parsedError)
-    }
-
-    return Promise.resolve(data)
-  }
-
-  async findDetailsByIdAndTable(id: number, tableName: WaypointTableName) {
-    const detailsQuery = generateDetailsQuery(tableName)
-
-    if (!detailsQuery) {
-      return Promise.resolve(null)
-    }
-
-    const { error, data } = await supabase
-      .from(tableName)
-      .select(detailsQuery)
-      .eq("waypoint_id", id)
-      .single()
-
-    if (error) {
-      const parsedError = parsePgError(error)
+    if (waypointsError) {
+      const parsedError = parsePgError(waypointsError)
 
       return parsedError.cause === "NotFound"
         ? Promise.resolve(null)
         : Promise.reject(parsedError)
     }
 
-    return Promise.resolve(data as unknown as WaypointDetailsDTO)
+    if (!waypointsData.length) {
+      return Promise.resolve(null)
+    }
+
+    // Find the target waypoint data object
+    const targetWaypoint = waypointsData.find((item) => item.id === id)
+
+    if (!targetWaypoint) {
+      return Promise.resolve(null)
+    }
+
+    const { adventure, ...otherWaypointsData } = targetWaypoint
+
+    // Fetch additional details for target waypoint
+    const detailsData = await this.findDetailsByIdAndCat(
+      id,
+      targetWaypoint.category
+    )
+
+    // Parse data
+    const childrenData = waypointsData
+      .filter((item) => item.id !== id)
+      .map((item) => ({
+        id: item.id,
+        code: item.code,
+        name: item.name,
+        category: item.category,
+        adventure: item.adventure[0] ?? null,
+      }))
+
+    const payload = {
+      ...otherWaypointsData,
+      details: detailsData,
+      adventure: adventure[0] ?? null,
+      children: childrenData,
+    } as WaypointDTO
+
+    return Promise.resolve(payload)
   }
 }

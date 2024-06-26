@@ -2,7 +2,6 @@
 import type { Tables } from "@database/supabase.schema.js"
 
 export type Waypoint = Tables<"waypoints">
-export type WaypointDataSources = Tables<"waypoints_data_source">
 
 export type Cluster = Tables<"way_clusters">
 export type Galaxy = Tables<"way_galaxies">

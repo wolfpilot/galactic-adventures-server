@@ -5,9 +5,11 @@ import type { WaypointDTOBase } from "./waypoint.dtos.js"
 
 export type StarMetaClassDetails = Pick<
   MetaStarClasses,
-  "class" | "temperature_min_kelvin" | "temperature_max_kelvin" | "chromacity"
+  "temperature_min_kelvin" | "temperature_max_kelvin" | "chromacity"
 >
-export type StarDetails = Pick<Star, "class">
+export type StarDetails = Pick<Star, "class"> & {
+  meta_star_class: StarMetaClassDetails | null
+}
 
 export interface StarDTO extends WaypointDTOBase {
   category: "Star"

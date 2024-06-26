@@ -6,5 +6,5 @@ export type PlanetDetails = Pick<PlanetModel, "size" | "composition">
 
 export interface Planet extends WaypointBase {
   category: "Planet"
-  details: PlanetDetails
+  details: PlanetDetails | null
 }

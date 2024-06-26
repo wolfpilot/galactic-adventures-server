@@ -6,5 +6,5 @@ export type SuperclusterDetails = Pick<SuperclusterModel, "morphology">
 
 export interface Supercluster extends WaypointBase {
   category: "Supercluster"
-  details: SuperclusterDetails
+  details: SuperclusterDetails | null
 }

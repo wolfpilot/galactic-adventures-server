@@ -6,5 +6,5 @@ export type NebulaDetails = Pick<NebulaModel, "type">
 
 export interface Nebula extends WaypointBase {
   category: "Nebula"
-  details: NebulaDetails
+  details: NebulaDetails | null
 }

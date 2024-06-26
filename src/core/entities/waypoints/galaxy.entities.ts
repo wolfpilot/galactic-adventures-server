@@ -6,5 +6,5 @@ export type GalaxyDetails = Pick<GalaxyModel, "shape">
 
 export interface Galaxy extends WaypointBase {
   category: "Galaxy"
-  details: GalaxyDetails
+  details: GalaxyDetails | null
 }

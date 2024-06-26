@@ -6,5 +6,5 @@ export type SystemDetails = Pick<SystemModel, "type" | "isInhabited">
 
 export interface System extends WaypointBase {
   category: "System"
-  details: SystemDetails
+  details: SystemDetails | null
 }

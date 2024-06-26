@@ -13,5 +13,5 @@ export type StarDetails = Pick<StarModel, "class"> & {
 
 export interface Star extends WaypointBase {
   category: "Star"
-  details: StarDetails
+  details: StarDetails | null
 }

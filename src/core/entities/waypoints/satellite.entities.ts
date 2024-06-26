@@ -6,5 +6,5 @@ export type SatelliteDetails = Pick<SatelliteModel, "composition">
 
 export interface Satellite extends WaypointBase {
   category: "Satellite"
-  details: SatelliteDetails
+  details: SatelliteDetails | null
 }

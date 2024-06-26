@@ -6,5 +6,5 @@ export type ClusterDetails = Pick<ClusterModel, "constellations">
 
 export interface Cluster extends WaypointBase {
   category: "Cluster"
-  details: ClusterDetails
+  details: ClusterDetails | null
 }

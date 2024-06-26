@@ -39,7 +39,13 @@ export type WaypointPartial =
   | Planet
   | Satellite
 
+export type WaypointAdventurePartial = Pick<AdventureBase, "id" | "price">
+export type WaypointChildrenPartial = Pick<
+  WaypointModel,
+  "id" | "code" | "name" | "category"
+>
+
 export type Waypoint = WaypointPartial & {
-  adventure: AdventureBase | null
-  children: Pick<WaypointModel, "id" | "code" | "name" | "category">[]
+  adventure: WaypointAdventurePartial | null
+  children: WaypointChildrenPartial[]
 }

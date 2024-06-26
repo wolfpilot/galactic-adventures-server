@@ -8,19 +8,22 @@ import { supabase } from "@database/dataSource.js"
 // Ports
 import type { WaypointsRepositoryPort } from "@ports/waypoints.ports.js"
 
+// Mappers
+import { WaypointMapper } from "./mappers/WaypointMapper.js"
+
 // Helpers
 import { parsePgError } from "@database/lib/helpers/error.helpers.js"
 import { getWaypointDetails } from "@database/lib/helpers/query.helpers.js"
 
 export class WaypointsRepository implements WaypointsRepositoryPort {
   async findDetailsByIdAndCat(id: number, cat: WaypointCategory) {
-    const details = await getWaypointDetails(id, cat)
+    const detailsRes = await getWaypointDetails(id, cat)
 
-    if (!details) {
+    if (!detailsRes) {
       return Promise.resolve(null)
     }
 
-    const { error, data } = details
+    const { error, data } = detailsRes
 
     if (error) {
       const parsedError = parsePgError(error)
@@ -45,7 +48,6 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
           category,
           adventure:prd_adventures!prd_adventures_waypoint_id_fkey(
             id,
-            description,
             price
           )
         `
@@ -72,8 +74,6 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
       return Promise.resolve(null)
     }
 
-    const { adventure, ...otherWaypointData } = targetWaypoint
-
     // Fetch additional details for target waypoint
     const detailsData = await this.findDetailsByIdAndCat(
       id,
@@ -81,22 +81,13 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
     )
 
     // Parse data
-    const childrenData = waypointsData
-      .filter((item) => item.id !== id)
-      .map((item) => ({
-        id: item.id,
-        code: item.code,
-        name: item.name,
-        category: item.category,
-        adventure: item.adventure[0] ?? null,
-      }))
+    const otherWaypoints = waypointsData.filter((item) => item.id !== id)
 
-    const payload = {
-      ...otherWaypointData,
-      details: detailsData,
-      adventure: adventure[0] ?? null,
-      children: childrenData,
-    }
+    const payload = WaypointMapper.toEntity({
+      targetWaypointData: targetWaypoint,
+      otherWaypointsData: otherWaypoints,
+      detailsData,
+    })
 
     return Promise.resolve(payload as Waypoint)
   }

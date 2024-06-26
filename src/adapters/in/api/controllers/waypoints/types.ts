@@ -2,7 +2,7 @@ import type { Request, NextFunction } from "express"
 
 // Types
 import type { ControllerResponse } from "@api/controllers/types.js"
-import type { WaypointDTO } from "@services/dtos/waypoints/waypoint.dtos.js"
+import type { WaypointDTO } from "@services/dtos/waypoints.dtos.js"
 
 // Waypoints
 export type WaypointsGetByIdRequest = Request<{

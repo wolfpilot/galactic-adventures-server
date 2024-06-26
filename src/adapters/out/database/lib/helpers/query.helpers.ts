@@ -4,8 +4,8 @@ import type { PostgrestSingleResponse } from "@supabase/supabase-js"
 import type {
   WaypointCategory,
   WaypointTableName,
-} from "@entities/database.entities.js"
-import type { WaypointDetailsDTO } from "@services/dtos/waypoints/waypoint.dtos.js"
+} from "@database/repositories/models/database.models.js"
+import type { WaypointDetails } from "@entities/waypoints/waypoint.entities.js"
 
 // Database
 import { supabase } from "@database/dataSource.js"
@@ -25,7 +25,7 @@ const categoryToTableName: Record<WaypointCategory, WaypointTableName> = {
 export const getWaypointDetails = async (
   id: number,
   cat: WaypointCategory
-): Promise<PostgrestSingleResponse<WaypointDetailsDTO> | null> => {
+): Promise<PostgrestSingleResponse<WaypointDetails> | null> => {
   const tableName = categoryToTableName[cat]
 
   switch (cat) {

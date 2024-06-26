@@ -1,6 +1,6 @@
 // Types
-import type { WaypointCategory } from "@entities/database.entities.js"
-import type { WaypointDTO } from "@services/dtos/waypoints/waypoint.dtos.js"
+import type { WaypointCategory } from "@database/repositories/models/database.models.js"
+import type { Waypoint } from "@entities/waypoints/waypoint.entities.js"
 
 // Database
 import { supabase } from "@database/dataSource.js"
@@ -72,7 +72,7 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
       return Promise.resolve(null)
     }
 
-    const { adventure, ...otherWaypointsData } = targetWaypoint
+    const { adventure, ...otherWaypointData } = targetWaypoint
 
     // Fetch additional details for target waypoint
     const detailsData = await this.findDetailsByIdAndCat(
@@ -92,12 +92,12 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
       }))
 
     const payload = {
-      ...otherWaypointsData,
+      ...otherWaypointData,
       details: detailsData,
       adventure: adventure[0] ?? null,
       children: childrenData,
-    } as WaypointDTO
+    }
 
-    return Promise.resolve(payload)
+    return Promise.resolve(payload as Waypoint)
   }
 }

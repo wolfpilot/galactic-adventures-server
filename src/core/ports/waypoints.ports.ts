@@ -1,14 +1,14 @@
 // Types
-import type { WaypointCategory } from "@entities/database.entities.js"
+import type { WaypointCategory } from "@database/repositories/models/database.models.js"
 import type {
-  WaypointDTO,
-  WaypointDetailsDTO,
-} from "@database/repositories/dtos/waypoints.dtos.js"
+  WaypointDetails,
+  Waypoint,
+} from "@entities/waypoints/waypoint.entities.js"
 
 export interface WaypointsRepositoryPort {
-  findWithChildrenById: (id: number) => Promise<WaypointDTO | null>
   findDetailsByIdAndCat: (
     id: number,
     cat: WaypointCategory
-  ) => Promise<WaypointDetailsDTO | null>
+  ) => Promise<WaypointDetails | null>
+  findWithChildrenById: (id: number) => Promise<Waypoint | null>
 }

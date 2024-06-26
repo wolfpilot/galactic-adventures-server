@@ -1,5 +1,5 @@
 // Types
-import type { WaypointCategory } from "@entities/database.entities.js"
+import type { WaypointCategory } from "@database/repositories/models/database.models.js"
 import type { WaypointsRepositoryPort } from "@ports/waypoints.ports.js"
 import type { WaypointsService } from "./types.js"
 

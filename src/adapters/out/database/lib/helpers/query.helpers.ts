@@ -10,6 +10,9 @@ import type { WaypointDetails } from "@entities/waypoints/waypoint.entities.js"
 // Database
 import { supabase } from "@database/dataSource.js"
 
+// Helpers
+import { assertExhaustiveGuard } from "@helpers/typeGuards.helpers.js"
+
 // Setup
 const categoryToTableName: Record<WaypointCategory, WaypointTableName> = {
   Supercluster: "way_superclusters",
@@ -25,7 +28,7 @@ const categoryToTableName: Record<WaypointCategory, WaypointTableName> = {
 export const getWaypointDetails = async (
   id: number,
   cat: WaypointCategory
-): Promise<PostgrestSingleResponse<WaypointDetails> | null> => {
+): Promise<PostgrestSingleResponse<WaypointDetails>> => {
   const tableName = categoryToTableName[cat]
 
   switch (cat) {
@@ -117,6 +120,6 @@ export const getWaypointDetails = async (
         .eq("waypoint_id", id)
         .single()
     default:
-      return Promise.resolve(null)
+      return assertExhaustiveGuard(cat)
   }
 }

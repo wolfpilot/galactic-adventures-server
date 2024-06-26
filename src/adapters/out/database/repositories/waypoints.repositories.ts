@@ -17,13 +17,7 @@ import { getWaypointDetails } from "@database/lib/helpers/query.helpers.js"
 
 export class WaypointsRepository implements WaypointsRepositoryPort {
   async findDetailsByIdAndCat(id: number, cat: WaypointCategory) {
-    const detailsRes = await getWaypointDetails(id, cat)
-
-    if (!detailsRes) {
-      return Promise.resolve(null)
-    }
-
-    const { error, data } = detailsRes
+    const { error, data } = await getWaypointDetails(id, cat)
 
     if (error) {
       const parsedError = parsePgError(error)
@@ -87,8 +81,8 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
       targetWaypointData: targetWaypoint,
       otherWaypointsData: otherWaypoints,
       detailsData,
-    })
+    }) as Waypoint
 
-    return Promise.resolve(payload as Waypoint)
+    return Promise.resolve(payload)
   }
 }

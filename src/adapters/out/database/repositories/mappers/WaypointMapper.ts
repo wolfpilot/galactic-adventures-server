@@ -1,3 +1,4 @@
+// Types
 import type {
   WaypointBase,
   WaypointAdventurePartial,
@@ -34,8 +35,8 @@ export class WaypointMapper {
       details: detailsData,
       adventure: adventure[0] ?? null,
       children: childrenData,
-    }
+    } as Waypoint
 
-    return payload as Waypoint
+    return payload
   }
 }

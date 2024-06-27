@@ -9,13 +9,17 @@ import express from "express"
 import cors from "cors"
 
 // Middleware
-import { contentTypeValidator } from "@middleware/contentTypeValidator.js"
-import { errorValidator } from "@middleware/errorValidator.js"
-import { errorHandler } from "@middleware/errorHandler.js"
-import { debugLogger, requestLogger, errorLogger } from "@middleware/logger.js"
+import { contentTypeValidator } from "@api/middleware/contentTypeValidator.js"
+import { errorValidator } from "@api/middleware/errorValidator.js"
+import { errorHandler } from "@api/middleware/errorHandler.js"
+import {
+  debugLogger,
+  requestLogger,
+  errorLogger,
+} from "@api/middleware/logger.js"
 
 // Routes
-import routes from "@routes/index.routes.js"
+import routes from "@api/routes/index.routes.js"
 
 const { PORT = 9000 } = process.env
 

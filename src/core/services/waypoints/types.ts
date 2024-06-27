@@ -1,17 +1,14 @@
 // Types
+import type { WaypointCategory } from "@database/repositories/models/database.models.js"
 import type {
-  WaypointBase,
-  Waypoint,
-} from "@entities/waypoints/waypoints.entities.js"
+  WaypointDTO,
+  WaypointDetailsDTO,
+} from "@services/dtos/waypoints.dtos.js"
 
-export type WaypointChildData = Omit<WaypointBase, "parent_id">
-
-export type WaypointsGetByIdResponse = Waypoint & {
-  children: WaypointChildData[]
+export interface WaypointsService {
+  getWithChildrenById: (id: number) => Promise<WaypointDTO | null>
+  getDetailsByIdAndTable: (
+    id: number,
+    cat: WaypointCategory
+  ) => Promise<WaypointDetailsDTO | null>
 }
-
-export type WaypointsGetById = ({
-  id,
-}: {
-  id: number
-}) => Promise<WaypointsGetByIdResponse | null>

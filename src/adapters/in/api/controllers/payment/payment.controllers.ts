@@ -40,11 +40,7 @@ export const paymentCreateIntent: PaymentCreateIntent = async (
 ) => {
   const { productType, productId } = req.body
 
-  if (
-    !productId ||
-    !productType ||
-    !Object.values(ProductType).includes(productType)
-  ) {
+  if (!Object.values(ProductType).includes(productType)) {
     return next(new HttpError("BadRequest"))
   }
 

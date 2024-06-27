@@ -18,10 +18,6 @@ export const adventuresGetById: AdventuresGetById = async (req, res, next) => {
 
   const parsedId = parseInt(id, 10)
 
-  if (!parsedId) {
-    return next(new HttpError("BadRequest"))
-  }
-
   try {
     const adventure = await adventuresService.getWithWaypointById(parsedId)
 

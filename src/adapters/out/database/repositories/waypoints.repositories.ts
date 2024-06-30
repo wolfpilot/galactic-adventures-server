@@ -42,7 +42,7 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
           category,
           adventure:prd_adventures!prd_adventures_waypoint_id_fkey(
             id,
-            price
+            price_sb
           )
         `
       )

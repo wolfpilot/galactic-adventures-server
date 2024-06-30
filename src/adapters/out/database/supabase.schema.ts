@@ -9,32 +9,98 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      meta_star_classes: {
+      ext_way_atmospheres: {
+        Row: {
+          ar_pct: number | null
+          ch4_pct: number | null
+          co2_pct: number | null
+          created_at: string
+          h2_pct: number | null
+          he_pct: number | null
+          id: number
+          n2_pct: number | null
+          na_pct: number | null
+          o2_pct: number | null
+          type: Database["public"]["Enums"]["AtmosphereType"] | null
+          updated_at: string | null
+          waypoint_code: string
+          waypoint_id: number
+        }
+        Insert: {
+          ar_pct?: number | null
+          ch4_pct?: number | null
+          co2_pct?: number | null
+          created_at?: string
+          h2_pct?: number | null
+          he_pct?: number | null
+          id?: number
+          n2_pct?: number | null
+          na_pct?: number | null
+          o2_pct?: number | null
+          type?: Database["public"]["Enums"]["AtmosphereType"] | null
+          updated_at?: string | null
+          waypoint_code: string
+          waypoint_id: number
+        }
+        Update: {
+          ar_pct?: number | null
+          ch4_pct?: number | null
+          co2_pct?: number | null
+          created_at?: string
+          h2_pct?: number | null
+          he_pct?: number | null
+          id?: number
+          n2_pct?: number | null
+          na_pct?: number | null
+          o2_pct?: number | null
+          type?: Database["public"]["Enums"]["AtmosphereType"] | null
+          updated_at?: string | null
+          waypoint_code?: string
+          waypoint_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ext_way_atmospheres_waypoint_code_fkey"
+            columns: ["waypoint_code"]
+            isOneToOne: false
+            referencedRelation: "waypoints"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "ext_way_atmospheres_waypoint_id_fkey"
+            columns: ["waypoint_id"]
+            isOneToOne: false
+            referencedRelation: "waypoints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      meta_star_spectral_classes: {
         Row: {
           chromacity: string | null
-          class: Database["public"]["Enums"]["StarClass"]
+          class: Database["public"]["Enums"]["StarSpectralClass"]
           created_at: string
           id: number
-          temperature_max_kelvin: number | null
-          temperature_min_kelvin: number | null
+          temperature_max_k: number | null
+          temperature_min_k: number | null
           updated_at: string
         }
         Insert: {
           chromacity?: string | null
-          class: Database["public"]["Enums"]["StarClass"]
+          class: Database["public"]["Enums"]["StarSpectralClass"]
           created_at?: string
           id?: number
-          temperature_max_kelvin?: number | null
-          temperature_min_kelvin?: number | null
+          temperature_max_k?: number | null
+          temperature_min_k?: number | null
           updated_at?: string
         }
         Update: {
           chromacity?: string | null
-          class?: Database["public"]["Enums"]["StarClass"]
+          class?: Database["public"]["Enums"]["StarSpectralClass"]
           created_at?: string
           id?: number
-          temperature_max_kelvin?: number | null
-          temperature_min_kelvin?: number | null
+          temperature_max_k?: number | null
+          temperature_min_k?: number | null
           updated_at?: string
         }
         Relationships: []
@@ -44,7 +110,7 @@ export type Database = {
           created_at: string | null
           description: string
           id: number
-          price: number
+          price_sb: number
           updated_at: string | null
           waypoint_code: string
           waypoint_id: number
@@ -53,7 +119,7 @@ export type Database = {
           created_at?: string | null
           description?: string
           id?: number
-          price: number
+          price_sb: number
           updated_at?: string | null
           waypoint_code: string
           waypoint_id: number
@@ -62,7 +128,7 @@ export type Database = {
           created_at?: string | null
           description?: string
           id?: number
-          price?: number
+          price_sb?: number
           updated_at?: string | null
           waypoint_code?: string
           waypoint_id?: number
@@ -122,37 +188,30 @@ export type Database = {
       }
       way_clusters: {
         Row: {
-          code: string
           constellations: string[] | null
           created_at: string
           id: number
           updated_at: string | null
+          waypoint_code: string
           waypoint_id: number
         }
         Insert: {
-          code: string
           constellations?: string[] | null
           created_at?: string
           id?: number
           updated_at?: string | null
+          waypoint_code: string
           waypoint_id: number
         }
         Update: {
-          code?: string
           constellations?: string[] | null
           created_at?: string
           id?: number
           updated_at?: string | null
+          waypoint_code?: string
           waypoint_id?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "clusters_code_fkey"
-            columns: ["code"]
-            isOneToOne: true
-            referencedRelation: "waypoints"
-            referencedColumns: ["code"]
-          },
           {
             foreignKeyName: "clusters_waypoint_id_fkey"
             columns: ["waypoint_id"]
@@ -160,41 +219,44 @@ export type Database = {
             referencedRelation: "waypoints"
             referencedColumns: ["id"]
           },
-        ]
-      }
-      way_galaxies: {
-        Row: {
-          code: string
-          created_at: string | null
-          id: number
-          shape: Database["public"]["Enums"]["GalaxyShape"]
-          updated_at: string | null
-          waypoint_id: number
-        }
-        Insert: {
-          code: string
-          created_at?: string | null
-          id?: number
-          shape: Database["public"]["Enums"]["GalaxyShape"]
-          updated_at?: string | null
-          waypoint_id: number
-        }
-        Update: {
-          code?: string
-          created_at?: string | null
-          id?: number
-          shape?: Database["public"]["Enums"]["GalaxyShape"]
-          updated_at?: string | null
-          waypoint_id?: number
-        }
-        Relationships: [
           {
-            foreignKeyName: "galaxies_code_fkey"
-            columns: ["code"]
+            foreignKeyName: "way_clusters_waypoint_code_fkey"
+            columns: ["waypoint_code"]
             isOneToOne: true
             referencedRelation: "waypoints"
             referencedColumns: ["code"]
           },
+        ]
+      }
+      way_galaxies: {
+        Row: {
+          created_at: string | null
+          emissions: Database["public"]["Enums"]["GalaxyEmissions"]
+          id: number
+          shape: Database["public"]["Enums"]["GalaxyShape"]
+          updated_at: string | null
+          waypoint_code: string
+          waypoint_id: number
+        }
+        Insert: {
+          created_at?: string | null
+          emissions: Database["public"]["Enums"]["GalaxyEmissions"]
+          id?: number
+          shape: Database["public"]["Enums"]["GalaxyShape"]
+          updated_at?: string | null
+          waypoint_code: string
+          waypoint_id: number
+        }
+        Update: {
+          created_at?: string | null
+          emissions?: Database["public"]["Enums"]["GalaxyEmissions"]
+          id?: number
+          shape?: Database["public"]["Enums"]["GalaxyShape"]
+          updated_at?: string | null
+          waypoint_code?: string
+          waypoint_id?: number
+        }
+        Relationships: [
           {
             foreignKeyName: "galaxies_waypoint_id_fkey"
             columns: ["waypoint_id"]
@@ -202,41 +264,50 @@ export type Database = {
             referencedRelation: "waypoints"
             referencedColumns: ["id"]
           },
-        ]
-      }
-      way_nebulae: {
-        Row: {
-          code: string
-          created_at: string
-          id: number
-          type: Database["public"]["Enums"]["NebulaType"]
-          updated_at: string | null
-          waypoint_id: number | null
-        }
-        Insert: {
-          code: string
-          created_at?: string
-          id?: number
-          type: Database["public"]["Enums"]["NebulaType"]
-          updated_at?: string | null
-          waypoint_id?: number | null
-        }
-        Update: {
-          code?: string
-          created_at?: string
-          id?: number
-          type?: Database["public"]["Enums"]["NebulaType"]
-          updated_at?: string | null
-          waypoint_id?: number | null
-        }
-        Relationships: [
           {
-            foreignKeyName: "nebulas_code_fkey"
-            columns: ["code"]
+            foreignKeyName: "way_galaxies_waypoint_code_fkey"
+            columns: ["waypoint_code"]
             isOneToOne: true
             referencedRelation: "waypoints"
             referencedColumns: ["code"]
           },
+        ]
+      }
+      way_nebulae: {
+        Row: {
+          age_y: number
+          composition: Database["public"]["Enums"]["NebulaComposition"]
+          created_at: string
+          id: number
+          temp_avg_k: number
+          type: Database["public"]["Enums"]["NebulaType"]
+          updated_at: string | null
+          waypoint_code: string
+          waypoint_id: number | null
+        }
+        Insert: {
+          age_y: number
+          composition: Database["public"]["Enums"]["NebulaComposition"]
+          created_at?: string
+          id?: number
+          temp_avg_k: number
+          type: Database["public"]["Enums"]["NebulaType"]
+          updated_at?: string | null
+          waypoint_code: string
+          waypoint_id?: number | null
+        }
+        Update: {
+          age_y?: number
+          composition?: Database["public"]["Enums"]["NebulaComposition"]
+          created_at?: string
+          id?: number
+          temp_avg_k?: number
+          type?: Database["public"]["Enums"]["NebulaType"]
+          updated_at?: string | null
+          waypoint_code?: string
+          waypoint_id?: number | null
+        }
+        Relationships: [
           {
             foreignKeyName: "nebulas_waypoint_id_fkey"
             columns: ["waypoint_id"]
@@ -244,44 +315,89 @@ export type Database = {
             referencedRelation: "waypoints"
             referencedColumns: ["id"]
           },
-        ]
-      }
-      way_planets: {
-        Row: {
-          code: string
-          composition: Database["public"]["Enums"]["SurfaceComposition"]
-          created_at: string
-          id: number
-          size: Database["public"]["Enums"]["PlanetSize"]
-          updated_at: string | null
-          waypoint_id: number | null
-        }
-        Insert: {
-          code: string
-          composition: Database["public"]["Enums"]["SurfaceComposition"]
-          created_at?: string
-          id?: number
-          size: Database["public"]["Enums"]["PlanetSize"]
-          updated_at?: string | null
-          waypoint_id?: number | null
-        }
-        Update: {
-          code?: string
-          composition?: Database["public"]["Enums"]["SurfaceComposition"]
-          created_at?: string
-          id?: number
-          size?: Database["public"]["Enums"]["PlanetSize"]
-          updated_at?: string | null
-          waypoint_id?: number | null
-        }
-        Relationships: [
           {
-            foreignKeyName: "planets_code_fkey"
-            columns: ["code"]
+            foreignKeyName: "way_nebulae_waypoint_code_fkey"
+            columns: ["waypoint_code"]
             isOneToOne: true
             referencedRelation: "waypoints"
             referencedColumns: ["code"]
           },
+        ]
+      }
+      way_planets: {
+        Row: {
+          composition: Database["public"]["Enums"]["SurfaceComposition"]
+          created_at: string
+          day_length_h: number
+          diameter_km: number
+          ext_atmosphere_id: number | null
+          geological_activity:
+            | Database["public"]["Enums"]["GeologicalActivity"][]
+            | null
+          gravity_n: number
+          id: number
+          is_habitable: boolean
+          orbital_period_d: number
+          precipitation_level: Database["public"]["Enums"]["PrecipitationLevel"]
+          precipitation_types: string[] | null
+          size: Database["public"]["Enums"]["PlanetSize"]
+          surface_temp_avg_k: number
+          updated_at: string | null
+          waypoint_code: string
+          waypoint_id: number | null
+          weather_alerts: string[] | null
+          wind_gust_max_kmh: number
+          wind_speed_avg_kmh: number
+        }
+        Insert: {
+          composition: Database["public"]["Enums"]["SurfaceComposition"]
+          created_at?: string
+          day_length_h: number
+          diameter_km: number
+          ext_atmosphere_id?: number | null
+          geological_activity?:
+            | Database["public"]["Enums"]["GeologicalActivity"][]
+            | null
+          gravity_n: number
+          id?: number
+          is_habitable?: boolean
+          orbital_period_d: number
+          precipitation_level?: Database["public"]["Enums"]["PrecipitationLevel"]
+          precipitation_types?: string[] | null
+          size: Database["public"]["Enums"]["PlanetSize"]
+          surface_temp_avg_k: number
+          updated_at?: string | null
+          waypoint_code: string
+          waypoint_id?: number | null
+          weather_alerts?: string[] | null
+          wind_gust_max_kmh?: number
+          wind_speed_avg_kmh?: number
+        }
+        Update: {
+          composition?: Database["public"]["Enums"]["SurfaceComposition"]
+          created_at?: string
+          day_length_h?: number
+          diameter_km?: number
+          ext_atmosphere_id?: number | null
+          geological_activity?:
+            | Database["public"]["Enums"]["GeologicalActivity"][]
+            | null
+          gravity_n?: number
+          id?: number
+          is_habitable?: boolean
+          orbital_period_d?: number
+          precipitation_level?: Database["public"]["Enums"]["PrecipitationLevel"]
+          precipitation_types?: string[] | null
+          size?: Database["public"]["Enums"]["PlanetSize"]
+          surface_temp_avg_k?: number
+          updated_at?: string | null
+          waypoint_code?: string
+          waypoint_id?: number | null
+          weather_alerts?: string[] | null
+          wind_gust_max_kmh?: number
+          wind_speed_avg_kmh?: number
+        }
+        Relationships: [
           {
             foreignKeyName: "planets_waypoint_id_fkey"
             columns: ["waypoint_id"]
@@ -289,41 +405,93 @@ export type Database = {
             referencedRelation: "waypoints"
             referencedColumns: ["id"]
           },
-        ]
-      }
-      way_satellites: {
-        Row: {
-          code: string
-          composition: Database["public"]["Enums"]["SurfaceComposition"]
-          created_at: string
-          id: number
-          updated_at: string | null
-          waypoint_id: number
-        }
-        Insert: {
-          code: string
-          composition: Database["public"]["Enums"]["SurfaceComposition"]
-          created_at?: string
-          id?: number
-          updated_at?: string | null
-          waypoint_id: number
-        }
-        Update: {
-          code?: string
-          composition?: Database["public"]["Enums"]["SurfaceComposition"]
-          created_at?: string
-          id?: number
-          updated_at?: string | null
-          waypoint_id?: number
-        }
-        Relationships: [
           {
-            foreignKeyName: "satellites_code_fkey"
-            columns: ["code"]
+            foreignKeyName: "way_planets_ext_atmosphere_id_fkey"
+            columns: ["ext_atmosphere_id"]
+            isOneToOne: false
+            referencedRelation: "ext_way_atmospheres"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "way_planets_waypoint_code_fkey"
+            columns: ["waypoint_code"]
             isOneToOne: true
             referencedRelation: "waypoints"
             referencedColumns: ["code"]
           },
+        ]
+      }
+      way_satellites: {
+        Row: {
+          composition: Database["public"]["Enums"]["SurfaceComposition"]
+          created_at: string
+          day_length_h: number
+          diameter_km: number
+          ext_atmosphere_id: number | null
+          geological_activity:
+            | Database["public"]["Enums"]["GeologicalActivity"][]
+            | null
+          gravity_n: number
+          id: number
+          orbital_period_d: number
+          precipitation_level: Database["public"]["Enums"]["PrecipitationLevel"]
+          precipitation_types: string[] | null
+          size: Database["public"]["Enums"]["SatelliteSize"]
+          surface_temp_avg_k: number
+          updated_at: string | null
+          waypoint_code: string
+          waypoint_id: number
+          weather_alerts: string[] | null
+          wind_gust_max_kmh: number
+          wind_speed_avg_kmh: number
+        }
+        Insert: {
+          composition: Database["public"]["Enums"]["SurfaceComposition"]
+          created_at?: string
+          day_length_h: number
+          diameter_km: number
+          ext_atmosphere_id?: number | null
+          geological_activity?:
+            | Database["public"]["Enums"]["GeologicalActivity"][]
+            | null
+          gravity_n: number
+          id?: number
+          orbital_period_d: number
+          precipitation_level?: Database["public"]["Enums"]["PrecipitationLevel"]
+          precipitation_types?: string[] | null
+          size: Database["public"]["Enums"]["SatelliteSize"]
+          surface_temp_avg_k: number
+          updated_at?: string | null
+          waypoint_code: string
+          waypoint_id: number
+          weather_alerts?: string[] | null
+          wind_gust_max_kmh?: number
+          wind_speed_avg_kmh?: number
+        }
+        Update: {
+          composition?: Database["public"]["Enums"]["SurfaceComposition"]
+          created_at?: string
+          day_length_h?: number
+          diameter_km?: number
+          ext_atmosphere_id?: number | null
+          geological_activity?:
+            | Database["public"]["Enums"]["GeologicalActivity"][]
+            | null
+          gravity_n?: number
+          id?: number
+          orbital_period_d?: number
+          precipitation_level?: Database["public"]["Enums"]["PrecipitationLevel"]
+          precipitation_types?: string[] | null
+          size?: Database["public"]["Enums"]["SatelliteSize"]
+          surface_temp_avg_k?: number
+          updated_at?: string | null
+          waypoint_code?: string
+          waypoint_id?: number
+          weather_alerts?: string[] | null
+          wind_gust_max_kmh?: number
+          wind_speed_avg_kmh?: number
+        }
+        Relationships: [
           {
             foreignKeyName: "satellites_waypoint_id_fkey"
             columns: ["waypoint_id"]
@@ -331,44 +499,74 @@ export type Database = {
             referencedRelation: "waypoints"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "way_satellites_ext_atmosphere_id_fkey"
+            columns: ["ext_atmosphere_id"]
+            isOneToOne: false
+            referencedRelation: "ext_way_atmospheres"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "way_satellites_waypoint_code_fkey"
+            columns: ["waypoint_code"]
+            isOneToOne: true
+            referencedRelation: "waypoints"
+            referencedColumns: ["code"]
+          },
         ]
       }
       way_stars: {
         Row: {
-          class: number
-          code: string
           created_at: string
+          ext_atmosphere_id: number | null
           id: number
+          life_cycle: Database["public"]["Enums"]["StarLifeCycle"]
+          mass: Database["public"]["Enums"]["StarMass"]
+          spectral_class_id: number
           updated_at: string | null
+          waypoint_code: string
           waypoint_id: number | null
         }
         Insert: {
-          class: number
-          code: string
           created_at?: string
+          ext_atmosphere_id?: number | null
           id?: number
+          life_cycle: Database["public"]["Enums"]["StarLifeCycle"]
+          mass: Database["public"]["Enums"]["StarMass"]
+          spectral_class_id: number
           updated_at?: string | null
+          waypoint_code: string
           waypoint_id?: number | null
         }
         Update: {
-          class?: number
-          code?: string
           created_at?: string
+          ext_atmosphere_id?: number | null
           id?: number
+          life_cycle?: Database["public"]["Enums"]["StarLifeCycle"]
+          mass?: Database["public"]["Enums"]["StarMass"]
+          spectral_class_id?: number
           updated_at?: string | null
+          waypoint_code?: string
           waypoint_id?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "way_stars_class_fkey"
-            columns: ["class"]
+            foreignKeyName: "way_stars_ext_atmosphere_id_fkey"
+            columns: ["ext_atmosphere_id"]
             isOneToOne: false
-            referencedRelation: "meta_star_classes"
+            referencedRelation: "ext_way_atmospheres"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "way_stars_code_fkey"
-            columns: ["code"]
+            foreignKeyName: "way_stars_spectral_class_id_fkey"
+            columns: ["spectral_class_id"]
+            isOneToOne: false
+            referencedRelation: "meta_star_spectral_classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "way_stars_waypoint_code_fkey"
+            columns: ["waypoint_code"]
             isOneToOne: true
             referencedRelation: "waypoints"
             referencedColumns: ["code"]
@@ -384,37 +582,30 @@ export type Database = {
       }
       way_superclusters: {
         Row: {
-          code: string
           created_at: string | null
           id: number
           morphology: Database["public"]["Enums"]["SuperclusterMorphology"]
           updated_at: string | null
+          waypoint_code: string
           waypoint_id: number
         }
         Insert: {
-          code: string
           created_at?: string | null
           id?: number
           morphology: Database["public"]["Enums"]["SuperclusterMorphology"]
           updated_at?: string | null
+          waypoint_code: string
           waypoint_id: number
         }
         Update: {
-          code?: string
           created_at?: string | null
           id?: number
           morphology?: Database["public"]["Enums"]["SuperclusterMorphology"]
           updated_at?: string | null
+          waypoint_code?: string
           waypoint_id?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "superclusters_code_fkey"
-            columns: ["code"]
-            isOneToOne: true
-            referencedRelation: "waypoints"
-            referencedColumns: ["code"]
-          },
           {
             foreignKeyName: "superclusters_waypoint_id_fkey"
             columns: ["waypoint_id"]
@@ -422,53 +613,60 @@ export type Database = {
             referencedRelation: "waypoints"
             referencedColumns: ["id"]
           },
-        ]
-      }
-      way_systems: {
-        Row: {
-          code: string
-          created_at: string | null
-          id: number
-          isEnabled: boolean | null
-          isInhabited: boolean
-          type: Database["public"]["Enums"]["SystemType"]
-          updated_at: string | null
-          waypoint_id: number | null
-        }
-        Insert: {
-          code: string
-          created_at?: string | null
-          id?: number
-          isEnabled?: boolean | null
-          isInhabited?: boolean
-          type: Database["public"]["Enums"]["SystemType"]
-          updated_at?: string | null
-          waypoint_id?: number | null
-        }
-        Update: {
-          code?: string
-          created_at?: string | null
-          id?: number
-          isEnabled?: boolean | null
-          isInhabited?: boolean
-          type?: Database["public"]["Enums"]["SystemType"]
-          updated_at?: string | null
-          waypoint_id?: number | null
-        }
-        Relationships: [
           {
-            foreignKeyName: "systems_code_fkey"
-            columns: ["code"]
+            foreignKeyName: "way_superclusters_waypoint_code_fkey"
+            columns: ["waypoint_code"]
             isOneToOne: true
             referencedRelation: "waypoints"
             referencedColumns: ["code"]
           },
+        ]
+      }
+      way_systems: {
+        Row: {
+          created_at: string | null
+          id: number
+          is_enabled: boolean | null
+          is_inhabited: boolean
+          type: Database["public"]["Enums"]["SystemType"]
+          updated_at: string | null
+          waypoint_code: string
+          waypoint_id: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          is_enabled?: boolean | null
+          is_inhabited?: boolean
+          type: Database["public"]["Enums"]["SystemType"]
+          updated_at?: string | null
+          waypoint_code: string
+          waypoint_id?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          is_enabled?: boolean | null
+          is_inhabited?: boolean
+          type?: Database["public"]["Enums"]["SystemType"]
+          updated_at?: string | null
+          waypoint_code?: string
+          waypoint_id?: number | null
+        }
+        Relationships: [
           {
             foreignKeyName: "systems_waypoint_id_fkey"
             columns: ["waypoint_id"]
             isOneToOne: false
             referencedRelation: "waypoints"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "way_systems_waypoint_code_fkey"
+            columns: ["waypoint_code"]
+            isOneToOne: true
+            referencedRelation: "waypoints"
+            referencedColumns: ["code"]
           },
         ]
       }
@@ -478,6 +676,7 @@ export type Database = {
           code: string
           created_at: string | null
           id: number
+          img_id: string | null
           name: string
           parent_id: number | null
           updated_at: string | null
@@ -487,6 +686,7 @@ export type Database = {
           code: string
           created_at?: string | null
           id?: number
+          img_id?: string | null
           name: string
           parent_id?: number | null
           updated_at?: string | null
@@ -496,6 +696,7 @@ export type Database = {
           code?: string
           created_at?: string | null
           id?: number
+          img_id?: string | null
           name?: string
           parent_id?: number | null
           updated_at?: string | null
@@ -518,12 +719,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      AtmosphereType: "None" | "Thick" | "Thin" | "Exotic"
+      GalaxyEmissions: "Quiescent" | "Active"
       GalaxyShape:
         | "Spiral"
         | "Elliptical"
         | "Lenticular"
         | "Peculiar"
         | "Irregular"
+      GeologicalActivity: "Volcanic" | "Tectonic" | "Tidal" | "Geyser"
+      NebulaComposition: "Hydrogen-rich" | "Molecular" | "Dust-rich"
       NebulaType:
         | "Emission"
         | "Reflection"
@@ -531,7 +736,22 @@ export type Database = {
         | "Planetary"
         | "Supernova Remnant"
       PlanetSize: "Supergiant" | "Giant" | "Super" | "Standard" | "Dwarf"
-      StarClass: "O" | "B" | "A" | "F" | "G" | "K" | "M"
+      PrecipitationLevel: "None" | "Low" | "Moderate" | "High" | "Continuous"
+      SatelliteSize: "Small" | "Medium" | "Large"
+      StarLifeCycle:
+        | "Protostar"
+        | "Main Sequence"
+        | "Red Giant"
+        | "Red Supergiant"
+        | "Planetary Nebula"
+        | "White Dwarf"
+        | "Black Dwarf"
+        | "Supernova"
+        | "Black Hole"
+        | "Neutron Star"
+        | "Pulsar"
+      StarMass: "Low" | "Intermediate" | "High"
+      StarSpectralClass: "O" | "B" | "A" | "F" | "G" | "K" | "M"
       SuperclusterMorphology: "Spider" | "Filament" | "Field"
       SurfaceComposition:
         | "Gas"

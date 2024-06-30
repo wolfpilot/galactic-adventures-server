@@ -25,6 +25,20 @@ const categoryToTableName: Record<WaypointCategory, WaypointTableName> = {
   Satellite: "way_satellites",
 }
 
+const getExtAtmosphereQuery = (tableName: WaypointTableName) => `
+  atmosphere:ext_way_atmospheres!${tableName}_ext_atmosphere_id_fkey(
+    type,
+    co2_pct,
+    n2_pct,
+    o2_pct,
+    ar_pct,
+    ch4_pct,
+    na_pct,
+    h2_pct,
+    he_pct
+  )
+`
+
 export const getWaypointDetails = async (
   id: number,
   cat: WaypointCategory
@@ -57,7 +71,8 @@ export const getWaypointDetails = async (
         .from(tableName)
         .select(
           `
-            shape
+            shape,
+            emissions
           `
         )
         .eq("waypoint_id", id)
@@ -67,7 +82,10 @@ export const getWaypointDetails = async (
         .from(tableName)
         .select(
           `
-              type
+              type,
+              composition,
+              age_y,
+              temp_avg_k
           `
         )
         .eq("waypoint_id", id)
@@ -77,8 +95,9 @@ export const getWaypointDetails = async (
         .from(tableName)
         .select(
           `
-            type,
-            isInhabited
+          is_enabled,
+          is_inhabited,
+          type
           `
         )
         .eq("waypoint_id", id)
@@ -88,11 +107,14 @@ export const getWaypointDetails = async (
         .from(tableName)
         .select(
           `
-            class,
-            meta_star_class:meta_star_classes!way_stars_class_fkey(
+            life_cycle,
+            mass,
+            ${getExtAtmosphereQuery(tableName)},
+            spectral_class:meta_star_spectral_classes!way_stars_spectral_class_id_fkey(
+              class,
               chromacity,
-              temperature_min_kelvin,
-              temperature_max_kelvin
+              temperature_min_k,
+              temperature_max_k
             )
           `
         )
@@ -103,8 +125,21 @@ export const getWaypointDetails = async (
         .from(tableName)
         .select(
           `
+            is_habitable,
             size,
-            composition
+            composition,
+            geological_activity,
+            diameter_km,
+            surface_temp_avg_k,
+            day_length_h,
+            orbital_period_d,
+            gravity_n,
+            wind_speed_avg_kmh,
+            wind_gust_max_kmh,
+            precipitation_level,
+            precipitation_types,
+            weather_alerts,
+            ${getExtAtmosphereQuery(tableName)}
           `
         )
         .eq("waypoint_id", id)
@@ -114,7 +149,20 @@ export const getWaypointDetails = async (
         .from(tableName)
         .select(
           `
-            composition
+            size,
+            composition,
+            geological_activity,
+            diameter_km,
+            surface_temp_avg_k,
+            day_length_h,
+            orbital_period_d,
+            gravity_n,
+            wind_speed_avg_kmh,
+            wind_gust_max_kmh,
+            precipitation_level,
+            precipitation_types,
+            weather_alerts,
+            ${getExtAtmosphereQuery(tableName)}
           `
         )
         .eq("waypoint_id", id)

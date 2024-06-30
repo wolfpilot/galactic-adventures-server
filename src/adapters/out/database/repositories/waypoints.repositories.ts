@@ -19,8 +19,14 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
   async findDetailsByIdAndCat(id: number, cat: WaypointCategory) {
     const { error, data } = await getWaypointDetails(id, cat)
 
+    console.log("data", data)
+
     if (error) {
+      console.log("error", error)
+
       const parsedError = parsePgError(error)
+
+      console.log("parsedError", parsedError)
 
       return parsedError.cause === "NotFound"
         ? Promise.resolve(null)
@@ -42,7 +48,7 @@ export class WaypointsRepository implements WaypointsRepositoryPort {
           category,
           adventure:prd_adventures!prd_adventures_waypoint_id_fkey(
             id,
-            price
+            price_sb
           )
         `
       )

@@ -15,7 +15,7 @@ export class AdventuresRepository implements AdventuresRepositoryPort {
         `
           id,
           description,
-          price,
+          price_sb,
           waypoint:waypoints!prd_adventures_waypoint_id_fkey(
             id,
             parent_id,

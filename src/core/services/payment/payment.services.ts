@@ -47,7 +47,7 @@ export class PaymentService implements IPaymentService {
         enabled: true,
       },
       currency: "eur",
-      amount: product.price * 100,
+      amount: product.price_sb * 100,
       description: `Payment for ${type}: ${product.id}.`,
       metadata: {
         id,

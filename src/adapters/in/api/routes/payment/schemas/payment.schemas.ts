@@ -12,18 +12,18 @@ import type { JSONSchema7 } from "json-schema"
 export const paymentCreateIntentSchema: JSONSchema7 = {
   title: "Create a Stripe payment intent.",
   type: "object",
-  required: ["productId", "productType"],
+  required: ["productType", "productId"],
   properties: {
+    productType: {
+      description: "The type of product being requested.",
+      type: "string",
+      pattern: "^[A-Za-z]+$",
+      minLength: 1,
+    },
     productId: {
       description: "The unique identifier of the record being requested.",
       type: "string",
       pattern: "^[0-9]+$",
-      minLength: 1,
-    },
-    productType: {
-      description: "The unique identifier of the record being requested.",
-      type: "string",
-      pattern: "^[A-Za-z]+$",
       minLength: 1,
     },
   },

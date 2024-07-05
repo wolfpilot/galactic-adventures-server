@@ -676,7 +676,6 @@ export type Database = {
           code: string
           created_at: string | null
           id: number
-          img_id: string | null
           name: string
           parent_id: number | null
           updated_at: string | null
@@ -686,7 +685,6 @@ export type Database = {
           code: string
           created_at?: string | null
           id?: number
-          img_id?: string | null
           name: string
           parent_id?: number | null
           updated_at?: string | null
@@ -696,7 +694,6 @@ export type Database = {
           code?: string
           created_at?: string | null
           id?: number
-          img_id?: string | null
           name?: string
           parent_id?: number | null
           updated_at?: string | null

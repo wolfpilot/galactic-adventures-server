@@ -19,7 +19,7 @@ export type PaymentCreateIntentRequest = Request<
   unknown,
   {
     productType: ProductType
-    productId: number
+    productId: string
   }
 >
 export type PaymentCreateIntentResponse = ControllerResponse<{

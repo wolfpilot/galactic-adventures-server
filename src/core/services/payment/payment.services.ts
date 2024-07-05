@@ -39,7 +39,7 @@ export class PaymentService implements IPaymentService {
         : null
 
     if (!product) {
-      return Promise.reject(new ServiceError("Unhandled"))
+      return Promise.reject(new ServiceError("NotFound"))
     }
 
     const paymentIntent = await stripe.paymentIntents.create({

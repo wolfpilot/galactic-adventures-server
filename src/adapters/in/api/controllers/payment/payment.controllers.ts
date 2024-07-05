@@ -6,7 +6,7 @@ import type { PaymentGetConfig, PaymentCreateIntent } from "./types.js"
 import { PaymentService } from "@services/payment/payment.services.js"
 
 // Helpers
-import { HttpError } from "@helpers/errorHelper.js"
+import { HttpError, ServiceError } from "@helpers/errorHelper.js"
 
 const paymentService = new PaymentService()
 
@@ -40,13 +40,15 @@ export const paymentCreateIntent: PaymentCreateIntent = async (
 ) => {
   const { productType, productId } = req.body
 
+  const parsedProductId = parseInt(productId, 10)
+
   if (!Object.values(ProductType).includes(productType)) {
     return next(new HttpError("BadRequest"))
   }
 
   try {
     const { clientSecret } = await paymentService.createIntent(
-      productId,
+      parsedProductId,
       productType
     )
 
@@ -61,7 +63,9 @@ export const paymentCreateIntent: PaymentCreateIntent = async (
       },
     })
   } catch (error: unknown) {
-    if (error instanceof Error) {
+    if (error instanceof ServiceError && error.cause === "NotFound") {
+      return next(new HttpError("NotFound"))
+    } else if (error instanceof Error) {
       return next(error)
     }
 

@@ -19,15 +19,17 @@ export const waypointsGetById: WaypointsGetById = async (req, res, next) => {
   const parsedId = parseInt(id, 10)
 
   try {
-    const data = await waypointsService.getWithChildrenById(parsedId)
+    const waypoint = await waypointsService.getWithChildrenById(parsedId)
 
-    if (!data) {
+    if (!waypoint) {
       return next(new HttpError("NotFound"))
     }
 
     return res.status(200).json({
       ok: true,
-      data,
+      data: {
+        waypoint,
+      },
     })
   } catch (error: unknown) {
     if (error instanceof Error) {

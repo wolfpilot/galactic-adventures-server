@@ -8,7 +8,9 @@ import type { WaypointDTO } from "@services/dtos/waypoints.dtos.js"
 export type WaypointsGetByIdRequest = Request<{
   id: string
 }>
-export type WaypointsGetByIdResponse = ControllerResponse<WaypointDTO | null>
+export type WaypointsGetByIdResponse = ControllerResponse<{
+  waypoint: WaypointDTO | null
+}>
 
 export type WaypointsGetById = (
   req: WaypointsGetByIdRequest,

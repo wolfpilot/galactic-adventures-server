@@ -6,6 +6,7 @@ import type {
 } from "@entities/waypoints/waypoint.entities.js"
 
 export interface WaypointsRepositoryPort {
+  findTopParentId: () => Promise<{ id: number } | null>
   findDetailsByIdAndCat: (
     id: number,
     cat: WaypointCategory

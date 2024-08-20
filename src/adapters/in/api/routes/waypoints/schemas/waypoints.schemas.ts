@@ -16,8 +16,8 @@ export const waypointsGetByIdSchema: JSONSchema7 = {
   properties: {
     id: {
       description: "The unique identifier of the record being requested.",
-      type: "string",
-      pattern: "^[0-9]+$",
+      type: ["string", "null"],
+      pattern: "^[0-9|null]+$",
       minLength: 1,
     },
   },

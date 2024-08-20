@@ -6,6 +6,10 @@ import type { WaypointsService } from "./types.js"
 export class WaypointsServiceImpl implements WaypointsService {
   constructor(private waypointsRepository: WaypointsRepositoryPort) {}
 
+  async getTopParentId() {
+    return await this.waypointsRepository.findTopParentId()
+  }
+
   async getWithChildrenById(id: number) {
     return await this.waypointsRepository.findWithChildrenById(id)
   }

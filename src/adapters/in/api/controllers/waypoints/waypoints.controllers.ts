@@ -16,9 +16,26 @@ const waypointsService = new WaypointsServiceImpl(waypointsRepository)
 export const waypointsGetById: WaypointsGetById = async (req, res, next) => {
   const { id } = req.params
 
-  const parsedId = parseInt(id, 10)
-
   try {
+    let parsedId
+
+    // Either default to the top-level parent ID or parse the supplied one
+    if (JSON.parse(id) === null) {
+      const topParentId = await waypointsService.getTopParentId()
+
+      if (!topParentId) {
+        return next(new HttpError("NotFound"))
+      }
+
+      parsedId = topParentId.id
+    } else {
+      parsedId = parseInt(id, 10)
+    }
+
+    if (!parsedId) {
+      return next(new HttpError("NotFound"))
+    }
+
     const waypoint = await waypointsService.getWithChildrenById(parsedId)
 
     if (!waypoint) {

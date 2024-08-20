@@ -16,6 +16,28 @@ import { parsePgError } from "@database/lib/helpers/error.helpers.js"
 import { getWaypointDetails } from "@database/lib/helpers/query.helpers.js"
 
 export class WaypointsRepository implements WaypointsRepositoryPort {
+  async findTopParentId() {
+    const { error, data } = await supabase
+      .from("waypoints")
+      .select(
+        `
+          id
+        `
+      )
+      .is("parent_id", null)
+      .single()
+
+    if (error) {
+      const parsedError = parsePgError(error)
+
+      return parsedError.cause === "NotFound"
+        ? Promise.resolve(null)
+        : Promise.reject(parsedError)
+    }
+
+    return Promise.resolve(data)
+  }
+
   async findDetailsByIdAndCat(id: number, cat: WaypointCategory) {
     const { error, data } = await getWaypointDetails(id, cat)
 

@@ -6,6 +6,7 @@ import type {
 } from "@services/dtos/waypoints.dtos.js"
 
 export interface WaypointsService {
+  getTopParentId: () => Promise<{ id: number } | null>
   getWithChildrenById: (id: number) => Promise<WaypointDTO | null>
   getDetailsByIdAndTable: (
     id: number,

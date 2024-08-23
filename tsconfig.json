@@ -14,18 +14,16 @@
     "verbatimModuleSyntax": true,
     "paths": {
       "*": ["./typings/*"],
-      "@root/*": ["./*"],
-      "@src/*": ["./src/*"],
-      "@constants/*": ["./src/adapters/constants/*"],
-      "@database/*": ["./src/adapters/database/*"],
-      "@helpers/*": ["./src/adapters/helpers/*"],
-      "@controllers/*": ["./src/adapters/http/controllers/*"],
-      "@middleware/*": ["./src/adapters/http/middleware/*"],
-      "@routes/*": ["./src/adapters/http/routes/*"],
+      "@api/*": ["src/adapters/in/api/*"],
+      "@database/*": ["src/adapters/out/database/*"],
+      "@payment/*": ["src/adapters/out/payment/*"],
       "@entities/*": ["src/core/entities/*"],
       "@migration/*": ["./src/core/migration/*"],
       "@ports/*": ["./src/core/ports/*"],
-      "@services/*": ["./src/core/services/*"]
+      "@services/*": ["./src/core/services/*"],
+      "@constants/*": ["./src/lib/constants/*"],
+      "@helpers/*": ["./src/lib/helpers/*"],
+      "@ts/*": ["./src/types/*"]
     },
 
     /* JavaScript Support */

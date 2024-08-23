@@ -16,7 +16,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "db:generate-types": "dotenv-flow -- cross-var \"npx supabase gen types typescript --project-id \"%SUPABASE_PROJECT_ID%\" > src/adapters/database/supabase.ts"
+    "db:generate-types": "dotenv-flow -- cross-var \"npx supabase gen types typescript --project-id \"%SUPABASE_PROJECT_ID%\" > src/adapters/out/database/supabase.schema.ts"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "@supabase/supabase-js": "^2.43.4",
+    "@types/json-schema": "^7.0.15",
     "cors": "^2.8.5",
     "cross-var": "^1.1.0",
     "dotenv-flow": "^4.1.0",
@@ -33,6 +34,7 @@
     "express": "^4.19.2",
     "express-json-validator-middleware": "^3.0.1",
     "express-winston": "^4.2.0",
+    "json-schema": "^0.4.0",
     "stripe": "^15.8.0",
     "ts-custom-error": "^3.3.1",
     "winston": "^3.13.0",

@@ -1,10 +1,17 @@
 // Types
-import { type Destination } from "@entities/products/adventures.entities.js"
+import type { ProductType } from "@ts/products.types.js"
+import type { ProductDTO, AdventureDTO } from "@services/dtos/products.dtos.js"
 
-export type DestinationsGetAll = () => Promise<Destination[] | null>
+export interface ProductsService {
+  getByTypeAndId: ({
+    type,
+    id,
+  }: {
+    type: ProductType
+    id: number
+  }) => Promise<ProductDTO | null>
+}
 
-export type DestinationsGetById = ({
-  id,
-}: {
-  id: number
-}) => Promise<Destination | null>
+export interface AdventuresService {
+  getWithWaypointById: (id: number) => Promise<AdventureDTO | null>
+}

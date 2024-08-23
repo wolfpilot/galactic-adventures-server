@@ -1,54 +1,48 @@
 // Types
-import { type DestinationsGetAll, type DestinationsGetById } from "./types.js"
+import type { AdventuresRepositoryPort } from "@ports/adventures.ports.js"
+import type { WaypointsRepositoryPort } from "@ports/waypoints.ports.js"
+import type { AdventuresService } from "./types.js"
 
-// Database
-import { supabase } from "@database/dataSource.js"
+// Repositories
+import { WaypointsRepository } from "@database/repositories/waypoints.repositories.js"
 
-// Helper
-import { ServiceError } from "@helpers/errorHelper.js"
+export class AdventuresServiceImpl implements AdventuresService {
+  private waypointsRepository: WaypointsRepositoryPort
 
-export const destinationsGetAll: DestinationsGetAll = async () => {
-  try {
-    const { error, data } = await supabase
-      .from("destinations")
-      .select(`*, systems("*")`)
-      .order("id")
-
-    if (error) {
-      console.error(error)
-
-      return Promise.reject(new ServiceError("Unhandled"))
-    }
-
-    return Promise.resolve(data)
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return Promise.reject(error)
-    }
-
-    return Promise.reject(new ServiceError("Unhandled"))
+  constructor(private adventuresRepository: AdventuresRepositoryPort) {
+    this.waypointsRepository = new WaypointsRepository()
   }
-}
 
-export const destinationsGetById: DestinationsGetById = async ({ id }) => {
-  try {
-    const { error, data } = await supabase
-      .from("destinations")
-      .select(`*, systems("*")`)
-      .eq("id", id)
-      .single()
+  async getWithWaypointById(id: number) {
+    const adventureData =
+      await this.adventuresRepository.findWithWaypointById(id)
 
-    if (error) {
-      console.error(error)
-
-      return Promise.reject(new ServiceError("Unhandled"))
-    }
-    return Promise.resolve(data)
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return Promise.reject(error)
+    if (!adventureData) {
+      return Promise.resolve(null)
     }
 
-    return Promise.reject(new ServiceError("Unhandled"))
+    const { waypoint, ...otherAdventureData } = adventureData
+
+    if (!waypoint) {
+      return Promise.resolve(null)
+    }
+
+    // Fetch additional details for target waypoint
+    const waypointDetailsData =
+      await this.waypointsRepository.findDetailsByIdAndCat(
+        waypoint.id,
+        waypoint.category
+      )
+
+    // Parse data
+    const payload = {
+      ...otherAdventureData,
+      waypoint: {
+        ...waypoint,
+        details: waypointDetailsData,
+      },
+    }
+
+    return Promise.resolve(payload)
   }
 }

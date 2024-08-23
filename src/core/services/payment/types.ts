@@ -1,16 +1,15 @@
 // Types
-import { ProductType } from "@entities/products/products.entities.js"
+import { ProductType } from "@ts/products.types.js"
 
-export type PaymentGetConfig = () => Promise<{
-  publishableKey: string | null
-}>
+export interface IPaymentService {
+  getConfig: () => Promise<{
+    publishableKey: string | null
+  }>
 
-export type PaymentCreateIntent = ({
-  productType,
-  productId,
-}: {
-  productType: ProductType
-  productId: number
-}) => Promise<{
-  clientSecret: string | null
-}>
+  createIntent: (
+    id: number,
+    type: ProductType
+  ) => Promise<{
+    clientSecret: string | null
+  }>
+}

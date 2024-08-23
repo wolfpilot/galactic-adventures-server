@@ -8,14 +8,15 @@
   "scripts": {
     "prepare": "husky install",
     "build": "npx tsc",
-    "start:dev": "tsx watch src/index.ts",
-    "start:prod": "tsx build/index.js",
+    "start:dev": "cross-env NODE_ENV=development tsx watch -r tsconfig-paths/register src/index.ts",
+    "start:prod": "cross-env NODE_ENV=production tsx build/index.js",
     "format": "prettier src/**/*.ts --write",
     "validate": "tsc --noEmit",
     "lint": "eslint -f stylish \"**/*.ts\"",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "db:generate-types": "dotenv-flow -- cross-var \"npx supabase gen types typescript --project-id \"%SUPABASE_PROJECT_ID%\" > src/adapters/out/database/supabase.schema.ts"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -24,11 +25,24 @@
   "author": "Razvan Negrea",
   "license": "MIT",
   "dependencies": {
+    "@supabase/supabase-js": "^2.43.4",
+    "@types/json-schema": "^7.0.15",
+    "cors": "^2.8.5",
+    "cross-var": "^1.1.0",
     "dotenv-flow": "^4.1.0",
-    "express": "^4.19.2"
+    "dotenv-flow-cli": "^1.1.1",
+    "express": "^4.19.2",
+    "express-json-validator-middleware": "^3.0.1",
+    "express-winston": "^4.2.0",
+    "json-schema": "^0.4.0",
+    "stripe": "^15.8.0",
+    "ts-custom-error": "^3.3.1",
+    "winston": "^3.13.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
+    "@types/cors": "^2.8.17",
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.13",
@@ -39,6 +53,8 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.5",
     "prettier": "^3.2.5",
+    "supabase": "^1.178.2",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.11.0",

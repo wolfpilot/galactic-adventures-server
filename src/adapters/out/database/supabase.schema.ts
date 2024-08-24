@@ -75,6 +75,24 @@ export type Database = {
           },
         ]
       }
+      keep_alive: {
+        Row: {
+          created_at: string
+          id: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       meta_star_spectral_classes: {
         Row: {
           chromacity: string | null

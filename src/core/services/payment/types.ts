@@ -11,5 +11,7 @@ export interface IPaymentService {
     type: ProductType
   ) => Promise<{
     clientSecret: string | null
+    amount: number
+    currency: string
   }>
 }

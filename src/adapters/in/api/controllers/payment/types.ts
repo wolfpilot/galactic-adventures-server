@@ -24,6 +24,8 @@ export type PaymentCreateIntentRequest = Request<
 >
 export type PaymentCreateIntentResponse = ControllerResponse<{
   clientSecret: string
+  amount: number
+  currency: string
 }>
 
 export type PaymentCreateIntent = (

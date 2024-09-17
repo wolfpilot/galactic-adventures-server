@@ -57,6 +57,8 @@ export class PaymentService implements IPaymentService {
 
     return Promise.resolve({
       clientSecret: paymentIntent.client_secret,
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
     })
   }
 }

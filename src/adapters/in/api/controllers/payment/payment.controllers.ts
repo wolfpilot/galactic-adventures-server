@@ -47,10 +47,8 @@ export const paymentCreateIntent: PaymentCreateIntent = async (
   }
 
   try {
-    const { clientSecret } = await paymentService.createIntent(
-      parsedProductId,
-      productType
-    )
+    const { clientSecret, amount, currency } =
+      await paymentService.createIntent(parsedProductId, productType)
 
     if (!clientSecret) {
       return next(new HttpError("NotFound"))
@@ -60,6 +58,8 @@ export const paymentCreateIntent: PaymentCreateIntent = async (
       ok: true,
       data: {
         clientSecret,
+        amount,
+        currency,
       },
     })
   } catch (error: unknown) {

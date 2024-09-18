@@ -2,13 +2,17 @@
 import { ProductType } from "@ts/products.types.js"
 import type { ProductsGetByTypeAndId } from "./types.js"
 
+// Repositories
+import { AdventuresRepository } from "@database/repositories/adventures.repositories.js"
+
 // Services
 import { ProductsServiceImpl } from "@services/products/products.services.js"
 
 // Helpers
 import { HttpError } from "@helpers/error.helpers.js"
 
-const productsService = new ProductsServiceImpl()
+const adventuresRepository = new AdventuresRepository()
+const productsService = new ProductsServiceImpl(adventuresRepository)
 
 export const productsGetByTypeAndId: ProductsGetByTypeAndId = async (
   req,

@@ -7,6 +7,9 @@ import type { IntentCreate, IntentGet } from "./types.js"
 // Services
 import { IntentServiceImpl } from "@services/payment/intent.services.js"
 
+// Repositories
+import { AdventuresRepository } from "@database/repositories/adventures.repositories.js"
+
 // Helpers
 import {
   HttpError,
@@ -14,7 +17,8 @@ import {
   parseStripeError,
 } from "@helpers/error.helpers.js"
 
-const intentService = new IntentServiceImpl()
+const adventuresRepository = new AdventuresRepository()
+const intentService = new IntentServiceImpl(adventuresRepository)
 
 export const intentCreate: IntentCreate = async (req, res, next) => {
   const { productType, productId } = req.body

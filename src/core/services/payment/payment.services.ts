@@ -48,7 +48,13 @@ export class PaymentService implements IPaymentService {
       },
       currency: "eur",
       amount: product.price_sb * 100,
-      description: `Payment for ${type}: ${product.id}.`,
+      description: JSON.stringify({
+        product: {
+          id,
+          type,
+          name: product.waypoint?.name,
+        },
+      }),
       metadata: {
         id,
         type,

@@ -14,7 +14,7 @@ export type PaymentGetConfig = (
   next: NextFunction
 ) => Promise<PaymentGetConfigResponse | void>
 
-export type PaymentCreateIntentRequest = Request<
+export type IntentCreateRequest = Request<
   unknown,
   unknown,
   {
@@ -22,14 +22,14 @@ export type PaymentCreateIntentRequest = Request<
     productId: string
   }
 >
-export type PaymentCreateIntentResponse = ControllerResponse<{
+export type IntentCreateResponse = ControllerResponse<{
   clientSecret: string
   amount: number
   currency: string
 }>
 
-export type PaymentCreateIntent = (
-  req: PaymentCreateIntentRequest,
-  res: PaymentCreateIntentResponse,
+export type IntentCreate = (
+  req: IntentCreateRequest,
+  res: IntentCreateResponse,
   next: NextFunction
-) => Promise<PaymentCreateIntentResponse | void>
+) => Promise<IntentCreateResponse | void>

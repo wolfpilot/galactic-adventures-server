@@ -1,11 +1,13 @@
 // Types
 import { ProductType } from "@ts/products.types.js"
 
-export interface IPaymentService {
+export interface PaymentService {
   getConfig: () => Promise<{
     publishableKey: string | null
   }>
+}
 
+export interface IntentService {
   createIntent: (
     id: number,
     type: ProductType

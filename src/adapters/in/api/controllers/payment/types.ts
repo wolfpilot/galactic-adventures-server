@@ -1,9 +1,11 @@
 import type { Request, NextFunction } from "express"
+import type { Stripe } from "stripe"
 
 // Types
 import type { ControllerResponse } from "../types.js"
 import { ProductType } from "@ts/products.types.js"
 
+// Payment
 export type PaymentGetConfigResponse = ControllerResponse<{
   publishableKey: string
 }>
@@ -13,6 +15,20 @@ export type PaymentGetConfig = (
   res: PaymentGetConfigResponse,
   next: NextFunction
 ) => Promise<PaymentGetConfigResponse | void>
+
+// Intent
+export type IntentGetRequest = Request<{
+  id: string
+}>
+export type IntentGetResponse = ControllerResponse<{
+  paymentIntent: Stripe.PaymentIntent | null
+}>
+
+export type IntentGet = (
+  req: IntentGetRequest,
+  res: IntentGetResponse,
+  next: NextFunction
+) => Promise<IntentGetResponse | void>
 
 export type IntentCreateRequest = Request<
   unknown,

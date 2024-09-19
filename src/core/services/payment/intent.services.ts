@@ -56,4 +56,18 @@ export class IntentServiceImpl implements IntentService {
       currency: paymentIntent.currency,
     })
   }
+
+  async getIntent(id: string) {
+    const paymentIntent = await stripe.paymentIntents.retrieve(id, {
+      expand: ["payment_method"],
+    })
+
+    if (!paymentIntent) {
+      return Promise.reject(new ServiceError("NotFound"))
+    }
+
+    return Promise.resolve({
+      paymentIntent,
+    })
+  }
 }

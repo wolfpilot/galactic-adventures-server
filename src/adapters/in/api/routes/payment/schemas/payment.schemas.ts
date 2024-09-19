@@ -28,3 +28,16 @@ export const intentCreateSchema: JSONSchema7 = {
     },
   },
 }
+
+export const intentGetSchema: JSONSchema7 = {
+  title: "Get a specific Stripe payment intent object.",
+  type: "object",
+  required: ["id"],
+  properties: {
+    id: {
+      description: "The unique identifier of the record being requested.",
+      type: "string",
+      minLength: 1,
+    },
+  },
+}

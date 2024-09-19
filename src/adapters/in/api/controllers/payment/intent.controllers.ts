@@ -1,6 +1,6 @@
 // Types
 import { ProductType } from "@ts/products.types.js"
-import type { IntentCreate } from "./types.js"
+import type { IntentCreate, IntentGet } from "./types.js"
 
 // Services
 import { IntentServiceImpl } from "@services/payment/intent.services.js"
@@ -36,6 +36,35 @@ export const intentCreate: IntentCreate = async (req, res, next) => {
         amount,
         currency,
       },
+    })
+  } catch (error: unknown) {
+    if (error instanceof ServiceError && error.cause === "NotFound") {
+      return next(new HttpError("NotFound"))
+    } else if (error instanceof Error) {
+      return next(error)
+    }
+
+    next(new HttpError("InternalServerError"))
+  }
+}
+
+export const intentGet: IntentGet = async (req, res, next) => {
+  const { id } = req.params
+
+  if (!id) {
+    return next(new HttpError("BadRequest"))
+  }
+
+  try {
+    const data = await intentService.getIntent(id)
+
+    if (!data) {
+      return next(new HttpError("NotFound"))
+    }
+
+    return res.status(201).json({
+      ok: true,
+      data,
     })
   } catch (error: unknown) {
     if (error instanceof ServiceError && error.cause === "NotFound") {

@@ -39,7 +39,7 @@ describe("GET /products/adventures/:id", () => {
       id: [undefined, null, NaN, "abc"],
     }
 
-    it.each(mockReq.id)("should respond with null", async (id) => {
+    it.each(mockReq.id)("should respond with 400 bad request", async (id) => {
       const res = await request(app).get(`/products/adventures/${id}`).send()
 
       // Verify base response

@@ -60,7 +60,7 @@ describe("GET /waypoints/:id", () => {
       id: [undefined, NaN, "abc"],
     }
 
-    it.each(mockReq.id)("should respond with null", async (id) => {
+    it.each(mockReq.id)("should respond with 400 bad request", async (id) => {
       const res = await request(app).get(`/waypoints/${id}`).send()
 
       // Verify base response

@@ -1,5 +1,5 @@
 // Types
-import type { GenericErrors } from "./errors.js"
+import type { GenericErrors } from "@ts/errors.types.js"
 
 export const REPOSITORY_ERROR_NAME = "RepositoryError"
 

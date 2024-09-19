@@ -38,7 +38,7 @@ describe("GET /products", () => {
     })
   })
 
-  describe("when the type is invalid", () => {
+  describe("when the product type is valid, yet no records in the DB", () => {
     const mockReq = {
       type: [ProductType.merchandise, ProductType.tour],
       id: 1,
@@ -70,6 +70,26 @@ describe("GET /products", () => {
       const res = await request(app)
         .get(`/products?type=${mockReq.type}&id=${id}`)
         .send()
+
+      // Verify base response
+      expect(res.status).toBe(400)
+      expect(res.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      )
+
+      // Verify data integrity
+      expect(res.body.data).not.toBeDefined()
+    })
+  })
+
+  describe("when the product type is invalid", () => {
+    it("should respond with 400 bad request", async () => {
+      const mockReq = {
+        type: "random",
+        id: 1,
+      }
+
+      const res = await request(app).post("/payment/intent").send(mockReq)
 
       // Verify base response
       expect(res.status).toBe(400)

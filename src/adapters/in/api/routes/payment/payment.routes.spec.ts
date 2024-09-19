@@ -8,7 +8,7 @@ beforeEach(() => {
   vi.resetAllMocks()
 })
 
-describe("GET /payment", () => {
+describe("GET /payment/:id", () => {
   describe("given the ENV var is set up correctly", () => {
     it("should respond with the Stripe PK", async () => {
       const res = await request(app).get("/payment").send()

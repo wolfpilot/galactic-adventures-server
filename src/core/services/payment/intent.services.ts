@@ -20,6 +20,7 @@ import { AdventuresRepository } from "@database/repositories/adventures.reposito
 
 // Helpers
 import { ServiceError } from "@helpers/error.helpers.js"
+import { obfuscateEmail } from "@helpers/string.helpers.js"
 
 export class IntentServiceImpl implements IntentService {
   private adventuresRepository: AdventuresRepositoryPort
@@ -77,6 +78,8 @@ export class IntentServiceImpl implements IntentService {
     }
 
     // Parse data
+    const email = paymentIntent.payment_method.billing_details.email
+
     const payload = {
       id: paymentIntent.id,
       client_secret: paymentIntent.client_secret,
@@ -89,7 +92,10 @@ export class IntentServiceImpl implements IntentService {
         created: paymentIntent.payment_method.created,
         type: paymentIntent.payment_method.type,
         livemode: paymentIntent.payment_method.livemode,
-        billing_details: paymentIntent.payment_method.billing_details,
+        billing_details: {
+          ...paymentIntent.payment_method.billing_details,
+          email: email ? obfuscateEmail(email) : "",
+        },
         ideal: paymentIntent.payment_method.ideal,
         card: paymentIntent.payment_method.card,
       },

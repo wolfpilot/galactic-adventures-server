@@ -45,9 +45,9 @@ export class IntentServiceImpl implements IntentService {
       currency: STRIPE_DEFAULT_CURRENCY,
       amount: product.price_sb * STRIPE_AMOUNT_MULTIPLIER,
       metadata: {
-        productId,
-        productType,
-        productName: product.waypoint?.name || null,
+        product_id: productId,
+        product_type: productType,
+        product_name: product.waypoint?.name || null,
       },
     })
 
@@ -62,13 +62,18 @@ export class IntentServiceImpl implements IntentService {
     return Promise.resolve(payload)
   }
 
+  // !: Try / catch and test with bad IDs. Should not throw 500, but 400 bad request?
   async getIntent(id: string) {
     const paymentIntent = await stripe.paymentIntents.retrieve(id, {
       expand: ["payment_method"],
     })
 
-    if (!paymentIntent) {
+    if (!paymentIntent?.payment_method) {
       return Promise.reject(new ServiceError("NotFound"))
+    }
+
+    if (typeof paymentIntent.payment_method === "string") {
+      return Promise.reject(new ServiceError("Unhandled"))
     }
 
     // Parse data
@@ -79,7 +84,15 @@ export class IntentServiceImpl implements IntentService {
       created: paymentIntent.created,
       amount: paymentIntent.amount,
       currency: paymentIntent.currency,
-      payment_method: paymentIntent.payment_method,
+      payment_method: {
+        id: paymentIntent.payment_method.id,
+        created: paymentIntent.payment_method.created,
+        type: paymentIntent.payment_method.type,
+        livemode: paymentIntent.payment_method.livemode,
+        billing_details: paymentIntent.payment_method.billing_details,
+        ideal: paymentIntent.payment_method.ideal,
+        card: paymentIntent.payment_method.card,
+      },
       metadata: paymentIntent.metadata,
     } as unknown as PaymentIntentGetDTO
 

@@ -10,9 +10,7 @@ const { STRIPE_PUBLIC_KEY = "" } = process.env
 export class PaymentServiceImpl implements PaymentService {
   getConfig() {
     return STRIPE_PUBLIC_KEY
-      ? Promise.resolve({
-          publishableKey: STRIPE_PUBLIC_KEY,
-        })
+      ? Promise.resolve(STRIPE_PUBLIC_KEY)
       : Promise.reject(new ServiceError("Unhandled"))
   }
 }

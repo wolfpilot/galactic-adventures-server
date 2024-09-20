@@ -11,7 +11,7 @@ import type {
 
 // Payment
 export type PaymentGetConfigResponse = ControllerResponse<{
-  publishableKey: PaymentConfigDTO | null
+  publishable_key: PaymentConfigDTO | null
 }>
 
 export type PaymentGetConfig = (

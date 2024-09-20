@@ -11,16 +11,16 @@ const paymentService = new PaymentServiceImpl()
 
 export const paymentGetConfig: PaymentGetConfig = async (_req, res, next) => {
   try {
-    const { publishableKey } = await paymentService.getConfig()
+    const publishable_key = await paymentService.getConfig()
 
-    if (!publishableKey) {
+    if (!publishable_key) {
       return next(new HttpError("NotFound"))
     }
 
     return res.status(200).json({
       ok: true,
       data: {
-        publishableKey,
+        publishable_key,
       },
     })
   } catch (error: unknown) {

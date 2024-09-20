@@ -3,9 +3,7 @@ import type { Stripe } from "stripe"
 // Types
 import { ProductType } from "@ts/products.types.js"
 
-export interface PaymentConfigDTO {
-  publishableKey: string | null
-}
+export type PaymentConfigDTO = string | null
 
 export interface PaymentIntentCreateDTO {
   id: Stripe.PaymentIntent["id"]

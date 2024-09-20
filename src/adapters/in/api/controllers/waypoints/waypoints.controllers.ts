@@ -8,7 +8,7 @@ import { WaypointsRepository } from "@database/repositories/waypoints.repositori
 import { WaypointsServiceImpl } from "@services/waypoints/waypoints.services.js"
 
 // Helpers
-import { HttpError } from "@helpers/errorHelper.js"
+import { HttpError } from "@helpers/error.helpers.js"
 
 const waypointsRepository = new WaypointsRepository()
 const waypointsService = new WaypointsServiceImpl(waypointsRepository)

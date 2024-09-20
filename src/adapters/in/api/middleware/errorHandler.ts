@@ -7,7 +7,7 @@ import {
 } from "@constants/errors/httpErrors.constants.js"
 
 // Utils
-import { HttpError } from "@helpers/errorHelper.js"
+import { HttpError } from "@helpers/error.helpers.js"
 
 export const errorHandler = (
   err: HttpError,

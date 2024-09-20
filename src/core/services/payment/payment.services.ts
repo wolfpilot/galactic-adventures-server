@@ -2,7 +2,7 @@
 import type { PaymentService } from "./types.js"
 
 // Helpers
-import { ServiceError } from "@helpers/errorHelper.js"
+import { ServiceError } from "@helpers/error.helpers.js"
 
 // Setup
 const { STRIPE_PUBLIC_KEY = "" } = process.env

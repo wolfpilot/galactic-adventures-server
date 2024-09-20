@@ -5,7 +5,7 @@ import type { PaymentGetConfig } from "./types.js"
 import { PaymentServiceImpl } from "@services/payment/payment.services.js"
 
 // Helpers
-import { HttpError } from "@helpers/errorHelper.js"
+import { HttpError } from "@helpers/error.helpers.js"
 
 const paymentService = new PaymentServiceImpl()
 

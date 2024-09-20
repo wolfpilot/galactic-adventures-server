@@ -8,7 +8,7 @@ import { AdventuresRepository } from "@database/repositories/adventures.reposito
 import { AdventuresServiceImpl } from "@services/products/adventures.services.js"
 
 // Helpers
-import { HttpError } from "@helpers/errorHelper.js"
+import { HttpError } from "@helpers/error.helpers.js"
 
 const adventuresRepository = new AdventuresRepository()
 const adventuresService = new AdventuresServiceImpl(adventuresRepository)

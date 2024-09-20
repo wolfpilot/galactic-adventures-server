@@ -6,7 +6,7 @@ import type { IntentCreate, IntentGet } from "./types.js"
 import { IntentServiceImpl } from "@services/payment/intent.services.js"
 
 // Helpers
-import { HttpError, ServiceError } from "@helpers/errorHelper.js"
+import { HttpError, ServiceError } from "@helpers/error.helpers.js"
 
 const intentService = new IntentServiceImpl()
 

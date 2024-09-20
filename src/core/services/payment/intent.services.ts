@@ -19,7 +19,7 @@ import type { AdventuresRepositoryPort } from "@ports/adventures.ports.js"
 import { AdventuresRepository } from "@database/repositories/adventures.repositories.js"
 
 // Helpers
-import { ServiceError } from "@helpers/errorHelper.js"
+import { ServiceError } from "@helpers/error.helpers.js"
 
 export class IntentServiceImpl implements IntentService {
   private adventuresRepository: AdventuresRepositoryPort

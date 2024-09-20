@@ -1,7 +1,7 @@
 import type { Response } from "express"
 
 // Helpers
-import { HttpError } from "@helpers/errorHelper.js"
+import { HttpError } from "@helpers/error.helpers.js"
 
 export type ControllerError = HttpError
 

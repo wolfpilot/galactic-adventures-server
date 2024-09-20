@@ -20,21 +20,19 @@ export const intentCreate: IntentCreate = async (req, res, next) => {
   }
 
   try {
-    const { clientSecret, amount, currency } = await intentService.createIntent(
+    const paymentIntent = await intentService.createIntent(
       parsedProductId,
       productType
     )
 
-    if (!clientSecret) {
+    if (!paymentIntent) {
       return next(new HttpError("NotFound"))
     }
 
     return res.status(201).json({
       ok: true,
       data: {
-        clientSecret,
-        amount,
-        currency,
+        paymentIntent,
       },
     })
   } catch (error: unknown) {
@@ -56,15 +54,17 @@ export const intentGet: IntentGet = async (req, res, next) => {
   }
 
   try {
-    const data = await intentService.getIntent(id)
+    const paymentIntent = await intentService.getIntent(id)
 
-    if (!data) {
+    if (!paymentIntent) {
       return next(new HttpError("NotFound"))
     }
 
     return res.status(201).json({
       ok: true,
-      data,
+      data: {
+        paymentIntent,
+      },
     })
   } catch (error: unknown) {
     if (error instanceof ServiceError && error.cause === "NotFound") {

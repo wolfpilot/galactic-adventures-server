@@ -1,8 +1,15 @@
 // Types
 import { ProductType } from "@ts/products.types.js"
 import type { IntentService } from "./types.js"
+import type { PaymentIntentGetDTO } from "@services/dtos/payment.dtos.js"
 
-// Stripe
+// Constants
+import {
+  STRIPE_DEFAULT_CURRENCY,
+  STRIPE_AMOUNT_MULTIPLIER,
+} from "@constants/payment/payment.constants.js"
+
+// Adapters
 import stripe from "@payment/stripeClient.js"
 
 // Ports
@@ -21,10 +28,10 @@ export class IntentServiceImpl implements IntentService {
     this.adventuresRepository = new AdventuresRepository()
   }
 
-  async createIntent(id: number, type: ProductType) {
+  async createIntent(productId: number, productType: ProductType) {
     const product =
-      type === ProductType.adventure
-        ? await this.adventuresRepository.findWithWaypointById(id)
+      productType === ProductType.adventure
+        ? await this.adventuresRepository.findWithWaypointById(productId)
         : null
 
     if (!product) {
@@ -35,26 +42,24 @@ export class IntentServiceImpl implements IntentService {
       automatic_payment_methods: {
         enabled: true,
       },
-      currency: "eur",
-      amount: product.price_sb * 100,
-      description: JSON.stringify({
-        product: {
-          id,
-          type,
-          name: product.waypoint?.name,
-        },
-      }),
+      currency: STRIPE_DEFAULT_CURRENCY,
+      amount: product.price_sb * STRIPE_AMOUNT_MULTIPLIER,
       metadata: {
-        id,
-        type,
+        productId,
+        productType,
+        productName: product.waypoint?.name || null,
       },
     })
 
-    return Promise.resolve({
-      clientSecret: paymentIntent.client_secret,
+    // Parse data
+    const payload = {
+      id: paymentIntent.id,
+      client_secret: paymentIntent.client_secret,
       amount: paymentIntent.amount,
       currency: paymentIntent.currency,
-    })
+    }
+
+    return Promise.resolve(payload)
   }
 
   async getIntent(id: string) {
@@ -66,8 +71,18 @@ export class IntentServiceImpl implements IntentService {
       return Promise.reject(new ServiceError("NotFound"))
     }
 
-    return Promise.resolve({
-      paymentIntent,
-    })
+    // Parse data
+    const payload = {
+      id: paymentIntent.id,
+      client_secret: paymentIntent.client_secret,
+      status: paymentIntent.status,
+      created: paymentIntent.created,
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      payment_method: paymentIntent.payment_method,
+      metadata: paymentIntent.metadata,
+    } as unknown as PaymentIntentGetDTO
+
+    return Promise.resolve(payload)
   }
 }

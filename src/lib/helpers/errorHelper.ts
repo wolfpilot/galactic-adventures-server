@@ -1,22 +1,25 @@
 import { CustomError } from "ts-custom-error"
 
 // Constants
-import { HttpStatusNames, httpErrors } from "@constants/errors/httpErrors.js"
+import {
+  HttpStatusNames,
+  httpErrors,
+} from "@constants/errors/httpErrors.constants.js"
 import {
   VALIDATION_ERROR_NAME,
   ValidationErrorCauses,
   validationErrors,
-} from "@constants/errors/validationErrors.js"
+} from "@constants/errors/validationErrors.constants.js"
 import {
   SERVICE_ERROR_NAME,
   ServiceErrorCauses,
   serviceErrors,
-} from "@constants/errors/serviceErrors.js"
+} from "@constants/errors/serviceErrors.constants.js"
 import {
   REPOSITORY_ERROR_NAME,
   RepositoryErrorCauses,
   repositoryErrors,
-} from "@constants/errors/repositoryErrors.js"
+} from "@constants/errors/repositoryErrors.constants.js"
 
 /**
  * Default is set to 500 Internal Server Error.

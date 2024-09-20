@@ -1,7 +1,10 @@
 import type { Request, Response, NextFunction } from "express"
 
 // Constants
-import { httpErrors, HttpStatusNames } from "@constants/errors/httpErrors.js"
+import {
+  httpErrors,
+  HttpStatusNames,
+} from "@constants/errors/httpErrors.constants.js"
 
 // Utils
 import { HttpError } from "@helpers/errorHelper.js"

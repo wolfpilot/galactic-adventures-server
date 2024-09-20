@@ -1,3 +1,4 @@
+import Stripe from "stripe"
 import { CustomError } from "ts-custom-error"
 
 // Constants
@@ -94,5 +95,27 @@ export class RepositoryError extends CustomError {
 
     this.cause = cause || err.cause || repositoryErrors.Unhandled.cause
     this.message = message || err.message || repositoryErrors.Unhandled.message
+  }
+}
+
+export const parseStripeError = (
+  error: Stripe.errors.StripeError
+): HttpError => {
+  switch (error.type) {
+    case "StripePermissionError":
+      return new HttpError("Forbidden")
+    case "StripeAPIError":
+    case "StripeConnectionError":
+      return new HttpError("BadGateway")
+    case "StripeCardError":
+    case "StripeInvalidRequestError":
+    case "StripeAuthenticationError":
+    case "StripeIdempotencyError":
+    case "StripeInvalidGrantError":
+      return new HttpError("BadRequest")
+    case "StripeRateLimitError":
+      return new HttpError("TooManyRequests")
+    default:
+      return new HttpError("InternalServerError")
   }
 }

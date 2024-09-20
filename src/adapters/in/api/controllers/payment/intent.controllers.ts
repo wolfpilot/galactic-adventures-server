@@ -1,3 +1,5 @@
+import Stripe from "stripe"
+
 // Types
 import { ProductType } from "@ts/products.types.js"
 import type { IntentCreate, IntentGet } from "./types.js"
@@ -6,7 +8,11 @@ import type { IntentCreate, IntentGet } from "./types.js"
 import { IntentServiceImpl } from "@services/payment/intent.services.js"
 
 // Helpers
-import { HttpError, ServiceError } from "@helpers/error.helpers.js"
+import {
+  HttpError,
+  ServiceError,
+  parseStripeError,
+} from "@helpers/error.helpers.js"
 
 const intentService = new IntentServiceImpl()
 
@@ -36,7 +42,9 @@ export const intentCreate: IntentCreate = async (req, res, next) => {
       },
     })
   } catch (error: unknown) {
-    if (error instanceof ServiceError && error.cause === "NotFound") {
+    if (error instanceof Stripe.errors.StripeError) {
+      return next(parseStripeError(error))
+    } else if (error instanceof ServiceError && error.cause === "NotFound") {
       return next(new HttpError("NotFound"))
     } else if (error instanceof Error) {
       return next(error)
@@ -67,7 +75,9 @@ export const intentGet: IntentGet = async (req, res, next) => {
       },
     })
   } catch (error: unknown) {
-    if (error instanceof ServiceError && error.cause === "NotFound") {
+    if (error instanceof Stripe.errors.StripeError) {
+      return next(parseStripeError(error))
+    } else if (error instanceof ServiceError && error.cause === "NotFound") {
       return next(new HttpError("NotFound"))
     } else if (error instanceof Error) {
       return next(error)

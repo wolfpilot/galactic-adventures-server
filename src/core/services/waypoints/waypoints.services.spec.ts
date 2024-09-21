@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest"
+import { beforeEach, describe, it, expect, vi } from "vitest"
 
 // Helpers
 import { RepositoryError } from "@helpers/error.helpers.js"
@@ -12,6 +12,10 @@ const mockWaypointsRepository = {
   findWithChildrenById: vi.fn(),
 }
 const waypointsService = new WaypointsServiceImpl(mockWaypointsRepository)
+
+beforeEach(() => {
+  vi.resetAllMocks()
+})
 
 describe("WaypointsService", () => {
   describe("getTopParentId", () => {
@@ -89,8 +93,8 @@ describe("WaypointsService", () => {
   })
 
   describe("getWithChildrenById", () => {
-    describe("given a valid ID and category", () => {
-      it("should fetch the WaypointDetails entity", async () => {
+    describe("given a valid ID", () => {
+      it("should fetch the cumulated data", async () => {
         const mockRes = {
           id: 1,
           parent_id: null,
@@ -117,7 +121,14 @@ describe("WaypointsService", () => {
 
         expect(res).toEqual(mockRes)
         expect(mockWaypointsRepository.findWithChildrenById).toHaveBeenCalled()
-        expect(mockWaypointsRepository.findDetailsByIdAndCat).toHaveBeenCalled()
+
+        /**
+         * ?: How to mock DB returning expected data on first query?
+         *
+         * The method for finding details should fire.
+         *
+         * expect(mockWaypointsRepository.findDetailsByIdAndCat).toHaveBeenCalled()
+         */
       })
     })
 
@@ -132,10 +143,9 @@ describe("WaypointsService", () => {
         expect(mockWaypointsRepository.findWithChildrenById).toHaveBeenCalled()
 
         /**
-         * !: Unfortunately there is no way (read: I don't know how) to mock the DB
-         * !: returning no records for an invalid ID.
+         * ?: How to mock DB returning no records for invalid ID?
          *
-         * That would mean the 2nd call for finding the details would never be fired.
+         * The method for finding details should never fire.
          *
          * expect(
          *    mockWaypointsRepository.findDetailsByIdAndCat

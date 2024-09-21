@@ -1,5 +1,5 @@
 // Types
-import type { GenericErrors } from "./errors.js"
+import type { GenericErrors } from "@ts/errors.types.js"
 
 export const VALIDATION_ERROR_NAME = "ValidationError"
 

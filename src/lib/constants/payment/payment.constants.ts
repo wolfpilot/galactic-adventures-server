@@ -1,0 +1,2 @@
+export const STRIPE_DEFAULT_CURRENCY = "eur"
+export const STRIPE_AMOUNT_MULTIPLIER = 100

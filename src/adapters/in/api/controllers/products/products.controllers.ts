@@ -6,7 +6,7 @@ import type { ProductsGetByTypeAndId } from "./types.js"
 import { ProductsServiceImpl } from "@services/products/products.services.js"
 
 // Helpers
-import { HttpError } from "@helpers/errorHelper.js"
+import { HttpError } from "@helpers/error.helpers.js"
 
 const productsService = new ProductsServiceImpl()
 

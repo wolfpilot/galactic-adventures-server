@@ -1,6 +1,6 @@
-import { httpErrors } from "./httpErrors.js"
-import { serviceErrors } from "./serviceErrors.js"
-import { repositoryErrors } from "./repositoryErrors.js"
-import { validationErrors } from "./validationErrors.js"
+import { httpErrors } from "./httpErrors.constants.js"
+import { serviceErrors } from "./serviceErrors.constants.js"
+import { repositoryErrors } from "./repositoryErrors.constants.js"
+import { validationErrors } from "./validationErrors.constants.js"
 
 export { httpErrors, serviceErrors, repositoryErrors, validationErrors }

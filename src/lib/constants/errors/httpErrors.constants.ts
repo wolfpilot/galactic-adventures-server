@@ -9,6 +9,8 @@ export enum HttpStatusNames {
   Conflict = "Conflict",
   // 415
   UnsupportedMediaType = "UnsupportedMediaType",
+  // 429
+  TooManyRequests = "TooManyRequests",
   // 500
   InternalServerError = "InternalServerError",
   // 502
@@ -59,6 +61,11 @@ export const httpErrors: HttpErrors = {
     name: HttpStatusNames.UnsupportedMediaType,
     message:
       "The content type of the request data or the content type of a part of a multipart request is not supported.",
+  },
+  TooManyRequests: {
+    status: 429,
+    name: HttpStatusNames.UnsupportedMediaType,
+    message: "Too many requests have been sent within a given time span.",
   },
   InternalServerError: {
     status: 500,

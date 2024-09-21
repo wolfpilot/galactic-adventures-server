@@ -1,22 +1,26 @@
+import Stripe from "stripe"
 import { CustomError } from "ts-custom-error"
 
 // Constants
-import { HttpStatusNames, httpErrors } from "@constants/errors/httpErrors.js"
+import {
+  HttpStatusNames,
+  httpErrors,
+} from "@constants/errors/httpErrors.constants.js"
 import {
   VALIDATION_ERROR_NAME,
   ValidationErrorCauses,
   validationErrors,
-} from "@constants/errors/validationErrors.js"
+} from "@constants/errors/validationErrors.constants.js"
 import {
   SERVICE_ERROR_NAME,
   ServiceErrorCauses,
   serviceErrors,
-} from "@constants/errors/serviceErrors.js"
+} from "@constants/errors/serviceErrors.constants.js"
 import {
   REPOSITORY_ERROR_NAME,
   RepositoryErrorCauses,
   repositoryErrors,
-} from "@constants/errors/repositoryErrors.js"
+} from "@constants/errors/repositoryErrors.constants.js"
 
 /**
  * Default is set to 500 Internal Server Error.
@@ -91,5 +95,27 @@ export class RepositoryError extends CustomError {
 
     this.cause = cause || err.cause || repositoryErrors.Unhandled.cause
     this.message = message || err.message || repositoryErrors.Unhandled.message
+  }
+}
+
+export const parseStripeError = (
+  error: Stripe.errors.StripeError
+): HttpError => {
+  switch (error.type) {
+    case "StripePermissionError":
+      return new HttpError("Forbidden")
+    case "StripeAPIError":
+    case "StripeConnectionError":
+      return new HttpError("BadGateway")
+    case "StripeCardError":
+    case "StripeInvalidRequestError":
+    case "StripeAuthenticationError":
+    case "StripeIdempotencyError":
+    case "StripeInvalidGrantError":
+      return new HttpError("BadRequest")
+    case "StripeRateLimitError":
+      return new HttpError("TooManyRequests")
+    default:
+      return new HttpError("InternalServerError")
   }
 }

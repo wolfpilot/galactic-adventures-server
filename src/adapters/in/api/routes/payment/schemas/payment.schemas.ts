@@ -9,7 +9,7 @@ import type { JSONSchema7 } from "json-schema"
  * @see https://stackoverflow.com/questions/18057850/req-params-number-is-string-in-expressjs
  */
 
-export const paymentCreateIntentSchema: JSONSchema7 = {
+export const intentCreateSchema: JSONSchema7 = {
   title: "Create a Stripe payment intent.",
   type: "object",
   required: ["productType", "productId"],
@@ -24,6 +24,19 @@ export const paymentCreateIntentSchema: JSONSchema7 = {
       description: "The unique identifier of the record being requested.",
       type: "string",
       pattern: "^[0-9]+$",
+      minLength: 1,
+    },
+  },
+}
+
+export const intentGetSchema: JSONSchema7 = {
+  title: "Get a specific Stripe payment intent object.",
+  type: "object",
+  required: ["id"],
+  properties: {
+    id: {
+      description: "The unique identifier of the record being requested.",
+      type: "string",
       minLength: 1,
     },
   },

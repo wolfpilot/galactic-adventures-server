@@ -1,15 +1,19 @@
 // Types
 import { ProductType } from "@ts/products.types.js"
+import type {
+  PaymentConfigDTO,
+  PaymentIntentCreateDTO,
+  PaymentIntentGetDTO,
+} from "@services/dtos/payment.dtos.js"
 
-export interface IPaymentService {
-  getConfig: () => Promise<{
-    publishableKey: string | null
-  }>
+export interface PaymentService {
+  getConfig: () => Promise<PaymentConfigDTO>
+}
 
+export interface IntentService {
   createIntent: (
-    id: number,
-    type: ProductType
-  ) => Promise<{
-    clientSecret: string | null
-  }>
+    productId: number,
+    productType: ProductType
+  ) => Promise<PaymentIntentCreateDTO>
+  getIntent: (id: string) => Promise<PaymentIntentGetDTO>
 }

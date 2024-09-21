@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express"
 
 // Helpers
-import { HttpError } from "@helpers/errorHelper.js"
+import { HttpError } from "@helpers/error.helpers.js"
 
 export const contentTypeValidator =
   (type: string) =>

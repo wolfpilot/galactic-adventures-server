@@ -1,7 +1,7 @@
 import type { PostgrestError } from "@supabase/supabase-js"
 
 // Helpers
-import { RepositoryError } from "@helpers/errorHelper.js"
+import { RepositoryError } from "@helpers/error.helpers.js"
 
 /**
  * Handle individual PG errors

@@ -1,71 +1,30 @@
 // Types
-import { ProductType } from "@ts/products.types.js"
-import type { PaymentGetConfig, PaymentCreateIntent } from "./types.js"
+import type { PaymentGetConfig } from "./types.js"
 
 // Services
-import { PaymentService } from "@services/payment/payment.services.js"
+import { PaymentServiceImpl } from "@services/payment/payment.services.js"
 
 // Helpers
-import { HttpError, ServiceError } from "@helpers/errorHelper.js"
+import { HttpError } from "@helpers/error.helpers.js"
 
-const paymentService = new PaymentService()
+const paymentService = new PaymentServiceImpl()
 
 export const paymentGetConfig: PaymentGetConfig = async (_req, res, next) => {
   try {
-    const { publishableKey } = await paymentService.getConfig()
+    const publishable_key = await paymentService.getConfig()
 
-    if (!publishableKey) {
+    if (!publishable_key) {
       return next(new HttpError("NotFound"))
     }
 
     return res.status(200).json({
       ok: true,
       data: {
-        publishableKey,
+        publishable_key,
       },
     })
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return next(error)
-    }
-
-    next(new HttpError("InternalServerError"))
-  }
-}
-
-export const paymentCreateIntent: PaymentCreateIntent = async (
-  req,
-  res,
-  next
-) => {
-  const { productType, productId } = req.body
-
-  const parsedProductId = parseInt(productId, 10)
-
-  if (!Object.values(ProductType).includes(productType)) {
-    return next(new HttpError("BadRequest"))
-  }
-
-  try {
-    const { clientSecret } = await paymentService.createIntent(
-      parsedProductId,
-      productType
-    )
-
-    if (!clientSecret) {
-      return next(new HttpError("NotFound"))
-    }
-
-    return res.status(201).json({
-      ok: true,
-      data: {
-        clientSecret,
-      },
-    })
-  } catch (error: unknown) {
-    if (error instanceof ServiceError && error.cause === "NotFound") {
-      return next(new HttpError("NotFound"))
-    } else if (error instanceof Error) {
       return next(error)
     }
 

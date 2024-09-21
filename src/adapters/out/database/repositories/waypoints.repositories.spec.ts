@@ -1,7 +1,11 @@
-import { describe, it, expect } from "vitest"
+import { beforeEach, describe, it, expect, vi } from "vitest"
 
 // Repositories
 import { WaypointsRepository } from "./waypoints.repositories.js"
+
+beforeEach(() => {
+  vi.resetAllMocks()
+})
 
 describe("WaypointsRepository", () => {
   const waypointsRepository = new WaypointsRepository()

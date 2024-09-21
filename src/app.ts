@@ -44,6 +44,10 @@ app.patch("/*", contentTypeValidator("application/json"))
 app.use(express.json())
 
 // Routes
+// app.use((_req, _res, next) => {
+//   setTimeout(next, 2500)
+// })
+
 app.use("/", routes)
 
 // Error middleware

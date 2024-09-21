@@ -2,7 +2,7 @@ import request from "supertest"
 import { describe, it, expect } from "vitest"
 
 // Helpers
-import { app } from "@helpers/testing.helpers.js"
+import app from "@mocks/app.mocks.js"
 
 describe("index", () => {
   describe("ping", () => {

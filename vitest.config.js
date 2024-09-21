@@ -45,6 +45,7 @@ export default defineConfig({
       "@services": path.resolve(__dirname, "./src/core/services"),
       "@constants": path.resolve(__dirname, "./src/lib/constants"),
       "@helpers": path.resolve(__dirname, "./src/lib/helpers"),
+      "@mocks": path.resolve(__dirname, "./src/lib/mocks"),
       "@ts": path.resolve(__dirname, "./src/types"),
     },
   },

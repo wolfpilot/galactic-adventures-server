@@ -17,19 +17,12 @@ import stripe from "@payment/stripeClient.js"
 // Ports
 import type { AdventuresRepositoryPort } from "@ports/adventures.ports.js"
 
-// Repositories
-import { AdventuresRepository } from "@database/repositories/adventures.repositories.js"
-
 // Helpers
 import { ServiceError } from "@helpers/error.helpers.js"
 import { obfuscateEmail } from "@helpers/string.helpers.js"
 
 export class IntentServiceImpl implements IntentService {
-  private adventuresRepository: AdventuresRepositoryPort
-
-  constructor() {
-    this.adventuresRepository = new AdventuresRepository()
-  }
+  constructor(private adventuresRepository: AdventuresRepositoryPort) {}
 
   async createIntent(productId: number, productType: ProductType) {
     try {

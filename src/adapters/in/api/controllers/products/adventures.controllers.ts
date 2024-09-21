@@ -3,6 +3,7 @@ import type { AdventuresGetById } from "./types.js"
 
 // Repositories
 import { AdventuresRepository } from "@database/repositories/adventures.repositories.js"
+import { WaypointsRepository } from "@database/repositories/waypoints.repositories.js"
 
 // Services
 import { AdventuresServiceImpl } from "@services/products/adventures.services.js"
@@ -11,7 +12,11 @@ import { AdventuresServiceImpl } from "@services/products/adventures.services.js
 import { HttpError } from "@helpers/error.helpers.js"
 
 const adventuresRepository = new AdventuresRepository()
-const adventuresService = new AdventuresServiceImpl(adventuresRepository)
+const waypointsRespository = new WaypointsRepository()
+const adventuresService = new AdventuresServiceImpl(
+  adventuresRepository,
+  waypointsRespository
+)
 
 export const adventuresGetById: AdventuresGetById = async (req, res, next) => {
   const { id } = req.params

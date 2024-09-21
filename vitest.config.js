@@ -1,7 +1,7 @@
 import path from "path"
 import { fileURLToPath } from "url"
 import { loadEnvFile } from "process"
-import { defineConfig } from "vitest/config"
+import { defineConfig, coverageConfigDefaults } from "vitest/config"
 
 // Setup
 const __filename = fileURLToPath(import.meta.url)
@@ -16,9 +16,22 @@ loadEnvFile(path.resolve(__dirname, ".env.test"))
 
 export default defineConfig({
   test: {
-    // env: loadEnv("", process.cwd(), ""),
     globals: true,
     environment: "jsdom",
+    coverage: {
+      exclude: [
+        ...coverageConfigDefaults.exclude,
+        "./build/*",
+        "./src/env.ts",
+        "**/*.models.ts",
+        "**/*.dtos.ts",
+        "**/*.entities.ts",
+        "**/*.ports.ts",
+        "**/*.schema.ts",
+        "**/*.types.ts",
+        "**/types.ts",
+      ],
+    },
   },
   resolve: {
     alias: {

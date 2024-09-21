@@ -1,5 +1,16 @@
-import { expect, test } from "vitest"
+import request from "supertest"
+import { describe, it, expect } from "vitest"
 
-test("adds 1 + 2 to equal 3", () => {
-  expect(1 + 2).toBe(3)
+// Helpers
+import { app } from "@helpers/testing.helpers.js"
+
+describe("index", () => {
+  describe("ping", () => {
+    it("should return true if server is reachable", async () => {
+      const res = await request(app).get("/ping").send()
+
+      expect(res.status).toBe(200)
+      expect(res.body).toHaveProperty("ok", true)
+    })
+  })
 })

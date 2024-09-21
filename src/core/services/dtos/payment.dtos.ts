@@ -28,6 +28,6 @@ export type PaymentIntentGetDTO = Pick<
   Stripe.PaymentIntent,
   "id" | "client_secret" | "status" | "created" | "amount" | "currency"
 > & {
-  payment_method: PaymentIntentGetMethodDTO
+  payment_method: PaymentIntentGetMethodDTO | null
   metadata: PaymentIntentGetMetadataDTO
 }

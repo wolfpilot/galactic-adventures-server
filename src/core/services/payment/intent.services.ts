@@ -79,16 +79,27 @@ export class IntentServiceImpl implements IntentService {
         expand: ["payment_method"],
       })
 
-      if (!paymentIntent?.payment_method) {
-        return Promise.reject(new ServiceError("NotFound"))
-      }
-
       if (typeof paymentIntent.payment_method === "string") {
         return Promise.reject(new ServiceError("Unhandled"))
       }
 
       // Parse data
-      const email = paymentIntent.payment_method.billing_details.email
+      const email = paymentIntent.payment_method?.billing_details.email
+
+      const parsedPaymentMethod = paymentIntent.payment_method
+        ? {
+            id: paymentIntent.payment_method.id,
+            created: paymentIntent.payment_method.created,
+            type: paymentIntent.payment_method.type,
+            livemode: paymentIntent.payment_method.livemode,
+            billing_details: {
+              ...paymentIntent.payment_method.billing_details,
+              email: email ? obfuscateEmail(email) : "",
+            },
+            ideal: paymentIntent.payment_method.ideal,
+            card: paymentIntent.payment_method.card,
+          }
+        : null
 
       const payload = {
         id: paymentIntent.id,
@@ -97,18 +108,7 @@ export class IntentServiceImpl implements IntentService {
         created: paymentIntent.created,
         amount: paymentIntent.amount,
         currency: paymentIntent.currency,
-        payment_method: {
-          id: paymentIntent.payment_method.id,
-          created: paymentIntent.payment_method.created,
-          type: paymentIntent.payment_method.type,
-          livemode: paymentIntent.payment_method.livemode,
-          billing_details: {
-            ...paymentIntent.payment_method.billing_details,
-            email: email ? obfuscateEmail(email) : "",
-          },
-          ideal: paymentIntent.payment_method.ideal,
-          card: paymentIntent.payment_method.card,
-        },
+        payment_method: parsedPaymentMethod,
         metadata: paymentIntent.metadata,
       } as unknown as PaymentIntentGetDTO
 

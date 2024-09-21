@@ -17,7 +17,7 @@ describe("WaypointsRepository", () => {
   })
 
   describe("findDetailsByIdAndCat", () => {
-    describe("given a valid ID", () => {
+    describe("given a valid ID and category", () => {
       it("should return the WaypointDetails entity as specified by ID and category", async () => {
         const res = await waypointsRepository.findDetailsByIdAndCat(
           1,

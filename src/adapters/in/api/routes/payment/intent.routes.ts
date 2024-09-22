@@ -14,16 +14,16 @@ import { validate } from "@api/middleware/schemaValidator.js"
 
 const router = express.Router()
 
-router.get(
-  "/:id",
-  validate({ params: intentGetSchema }),
-  intentController.intentGet
-)
-
 router.post(
   "/",
   validate({ body: intentCreateSchema }),
   intentController.intentCreate
+)
+
+router.get(
+  "/:id",
+  validate({ params: intentGetSchema }),
+  intentController.intentGet
 )
 
 export default router

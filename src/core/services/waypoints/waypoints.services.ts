@@ -10,11 +10,11 @@ export class WaypointsServiceImpl implements WaypointsService {
     return await this.waypointsRepository.findTopParentId()
   }
 
-  async getWithChildrenById(id: number) {
-    return await this.waypointsRepository.findWithChildrenById(id)
+  async getDetailsByIdAndCat(id: number, cat: WaypointCategory) {
+    return await this.waypointsRepository.findDetailsByIdAndCat(id, cat)
   }
 
-  async getDetailsByIdAndTable(id: number, cat: WaypointCategory) {
-    return await this.waypointsRepository.findDetailsByIdAndCat(id, cat)
+  async getWithChildrenById(id: number) {
+    return await this.waypointsRepository.findWithChildrenById(id)
   }
 }

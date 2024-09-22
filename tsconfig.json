@@ -23,6 +23,7 @@
       "@services/*": ["./src/core/services/*"],
       "@constants/*": ["./src/lib/constants/*"],
       "@helpers/*": ["./src/lib/helpers/*"],
+      "@mocks/*": ["./src/lib/mocks/*"],
       "@ts/*": ["./src/types/*"]
     },
 

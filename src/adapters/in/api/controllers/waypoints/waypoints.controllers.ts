@@ -1,7 +1,7 @@
 // Types
 import type { WaypointsGetById } from "./types.js"
 
-// Adapters
+// Repositories
 import { WaypointsRepository } from "@database/repositories/waypoints.repositories.js"
 
 // Services
@@ -19,7 +19,12 @@ export const waypointsGetById: WaypointsGetById = async (req, res, next) => {
   try {
     let parsedId
 
-    // Either default to the top-level parent ID or parse the supplied one
+    /**
+     * Either default to the top-level parent ID or parse the supplied one.
+     *
+     * Express decodes all params to strings, so we first parse it to test
+     * for null.
+     */
     if (JSON.parse(id) === null) {
       const topParentId = await waypointsService.getTopParentId()
 

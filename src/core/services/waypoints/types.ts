@@ -8,7 +8,7 @@ import type {
 export interface WaypointsService {
   getTopParentId: () => Promise<{ id: number } | null>
   getWithChildrenById: (id: number) => Promise<WaypointDTO | null>
-  getDetailsByIdAndTable: (
+  getDetailsByIdAndCat: (
     id: number,
     cat: WaypointCategory
   ) => Promise<WaypointDetailsDTO | null>

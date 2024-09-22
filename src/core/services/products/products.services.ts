@@ -3,15 +3,8 @@ import type { AdventuresRepositoryPort } from "@ports/adventures.ports.js"
 import type { ProductType } from "@ts/products.types.js"
 import type { ProductsService } from "./types.js"
 
-// Repositories
-import { AdventuresRepository } from "@database/repositories/adventures.repositories.js"
-
 export class ProductsServiceImpl implements ProductsService {
-  private adventuresRepository: AdventuresRepositoryPort
-
-  constructor() {
-    this.adventuresRepository = new AdventuresRepository()
-  }
+  constructor(private adventuresRepository: AdventuresRepositoryPort) {}
 
   async getByTypeAndId({ type, id }: { type: ProductType; id: number }) {
     switch (type) {

@@ -17,6 +17,7 @@ import {
   requestLogger,
   errorLogger,
 } from "@api/middleware/logger.js"
+import { rateLimiter } from "@api/middleware/rateLimiter.js"
 
 // Routes
 import routes from "@api/routes/index.routes.js"
@@ -43,11 +44,10 @@ app.patch("/*", contentTypeValidator("application/json"))
 // Body parser
 app.use(express.json())
 
-// Routes
-// app.use((_req, _res, next) => {
-//   setTimeout(next, 2500)
-// })
+// Limiter middleware
+app.use(rateLimiter)
 
+// Routes
 app.use("/", routes)
 
 // Error middleware

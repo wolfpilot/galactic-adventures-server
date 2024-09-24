@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "4b2d2dfd-6cde-4674-8dbf-65e4a5e39ee6",
+		"name": "Galactic Adventures",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1901372"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "Ping",
+					"item": [
+						{
+							"name": "Ping",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{devUrl}}/ping",
+									"host": [
+										"{{devUrl}}"
+									],
+									"path": [
+										"ping"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Payment",
+					"item": [
+						{
+							"name": "Intent",
+							"item": [
+								{
+									"name": "Create Payment Intent",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"productType\": \"adventure\",\r\n    \"productId\": \"1\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{devUrl}}/payment/intent",
+											"host": [
+												"{{devUrl}}"
+											],
+											"path": [
+												"payment",
+												"intent"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Payment Intent",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{devUrl}}/payment/intent/pi_3Pz0UxIOgdrQNMoY1CEor4ck",
+											"host": [
+												"{{devUrl}}"
+											],
+											"path": [
+												"payment",
+												"intent",
+												"pi_3Pz0UxIOgdrQNMoY1CEor4ck"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Public Key",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{devUrl}}/payment",
+									"host": [
+										"{{devUrl}}"
+									],
+									"path": [
+										"payment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Waypoints",
+					"item": [
+						{
+							"name": "Waypoints Get Default",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{devUrl}}/waypoints/null",
+									"host": [
+										"{{devUrl}}"
+									],
+									"path": [
+										"waypoints",
+										"null"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Waypoints Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{devUrl}}/waypoints/1",
+									"host": [
+										"{{devUrl}}"
+									],
+									"path": [
+										"waypoints",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Adventures",
+							"item": [
+								{
+									"name": "Adventures Get By Id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{devUrl}}/products/adventures/1",
+											"host": [
+												"{{devUrl}}"
+											],
+											"path": [
+												"products",
+												"adventures",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Products Get By Type and ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{devUrl}}/products?type=adventure&id=1",
+									"host": [
+										"{{devUrl}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "adventure"
+										},
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "devUrl",
+			"value": "http://localhost:9000"
+		}
+	]
+}

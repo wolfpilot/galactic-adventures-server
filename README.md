@@ -275,17 +275,24 @@ $ pnpm install
 # 1. Update your env config, see .env.example for guidance.
 
 # 2. Run the API service
-$ yarn start:dev
+$ pnpm start:dev
 ```
 
 ## Resources
 
+### Guides
+
 - Recommended reading for anyone new to [Building a REST API: A Hexagonal Approach](https://medium.com/@christianinyekaka/building-a-rest-api-a-hexagonal-approach-with-typescript-typeorm-postgresql-and-jwt-946d372860ee) by Christian Inyekaka
 - An intro to [Polymorphic Relationships and how they work]() by Hendel Ramzy
+
+### References
+
+- Example [repo](https://github.com/LordMoMA/Hexagonal-Architecture) for Hexagonal Architecture by David Lee
+
+### Credits
+
 - Data sourced from [NASA](https://science.nasa.gov/), [Wikipedia](https://en.wikipedia.org/) and a dozen others
 - Photography and generated image credits go to [NASA](https://science.nasa.gov/)
-- SVG icons credits go to [halfmage](https://www.svgrepo.com/collection/pixelarticons-interface-icons/) on SVGRepo
-- Custom cursor credits go to [nightklp](http://www.rw-designer.com/cursor-set/space-theme) on RealWorld Graphics
 
 ## License
 

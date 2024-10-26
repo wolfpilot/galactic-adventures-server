@@ -29,7 +29,23 @@ Now, you might be wondering, but why did you not use a graph database? And the h
 
 Let me introduce you to the solution: the [adjacency list pattern](https://medium.com/@rishabhdevmanu/from-trees-to-tables-storing-hierarchical-data-in-relational-databases-a5e5e6e1bd64) (pictured below).
 
-![screenshot](./docs/images/supabase.jpg)
+### Table Structure
+
+_waypoints_ - Stores all the parent and child nodes, as well as shared columns.
+
+![screenshot](./docs/images/supabase-waypoints.jpg)
+
+_way_planets_ - Holds planet-specific data. Some column duplication (waypoint_code) is required to make the values more human-readable.
+
+![screenshot](./docs/images/supabase-planets.jpg)
+
+_ext_way_atmospheres_ - An extension table which does not contain entities on its own.
+
+![screenshot](./docs/images/supabase-atmospheres.jpg)
+
+_meta_star_spectral_classes_ - A metadata table containing static data relating to the star classes.
+
+![screenshot](./docs/images/supabase-star-classes.jpg)
 
 ## Demo
 

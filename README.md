@@ -274,24 +274,65 @@ For the scope of this project (and for the sake of me getting some sleep), let's
 
 ### Requirements
 
-- [Node.js](https://nodejs.org/en/) (built on v20.0.14)
-- [Pnpm](https://pnpm.io/) (built on v9.1.4)
+- [Node.js](https://nodejs.org/en/) (built on v26.11.1)
+- [Pnpm](https://pnpm.io/) (built on v12.11.2)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Installation
 
 ```bash
-$ git clone https://github.com/wolfpilot/galactic-adventures-server.git
-$ cd galactic-adventures-server
-$ pnpm install
+git clone https://github.com/wolfpilot/galactic-adventures-server.git
+cd galactic-adventures-server
+pnpm install
 ```
 
-### Steps
+### Environment
+
+Create a `.env` file using `.env.example` as a guide.
+
+Add your hosted Supabase URL and publishable key there, along with your Stripe keys. The start scripts already set `NODE_ENV`, so `dotenv-flow` will automatically match the correct `.env` file:
 
 ```bash
-# 1. Update your env config, see .env.example for guidance.
+# both commands source from .env by default, but can be overriden by
+# .env.development.local or .env.production.local respectively
+pnpm start:dev
+pnpm start:prod
+```
 
-# 2. Run the API service
-$ pnpm start:dev
+> **NOTE:** Do not create or commit `.env.local` as `dotenv-flow` would also load it in production mode.
+
+### Setting up and seeding your local DB
+
+Start Docker Desktop, then run:
+
+```bash
+pnpm exec supabase start
+pnpm exec supabase status
+```
+
+The first command starts PostgreSQL and the Supabase API in Docker. On a fresh
+database, it applies the initial migration and loads `supabase/seed.sql`
+automatically. The seed contains the app's `public` table data; it does not
+include auth data, Storage metadata, or Storage files.
+
+Copy the **API URL** and **publishable (or anon) key** from `supabase status`
+into `.env.development.local`:
+
+```dotenv
+SUPABASE_URL=http://localhost:54321
+SUPABASE_API_KEY=<local-publishable-or-anon-key>
+```
+
+Run `pnpm start:dev` to connect the server to local Supabase. To run in
+production mode with the hosted values from `.env`, build first with
+`pnpm build`, then run `pnpm start:prod`.
+
+### Reset the local database
+
+To discard local database changes and reload the migration and seed, run:
+
+```bash
+pnpm exec supabase db reset
 ```
 
 ## Resources

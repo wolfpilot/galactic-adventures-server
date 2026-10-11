@@ -288,9 +288,18 @@ pnpm install
 
 ### Environment
 
-Create a `.env` file using `.env.example` as a guide, and fill in the app
-settings you need, including your Stripe keys. Local Supabase settings go in
-`.env.local`, as shown below.
+Create a `.env` file using `.env.example` as a guide.
+
+Add your hosted Supabase URL and publishable key there, along with your Stripe keys. The start scripts already set `NODE_ENV`, so `dotenv-flow` will automatically match the correct `.env` file:
+
+```bash
+# both commands source from .env by default, but can be overriden by
+# .env.development.local or .env.production.local respectively
+pnpm start:dev
+pnpm start:prod
+```
+
+> **NOTE:** Do not create or commit `.env.local` as `dotenv-flow` would also load it in production mode.
 
 ### Setting up and seeding your local DB
 
@@ -307,16 +316,16 @@ automatically. The seed contains the app's `public` table data; it does not
 include auth data, Storage metadata, or Storage files.
 
 Copy the **API URL** and **publishable (or anon) key** from `supabase status`
-into `.env.local`. This file is ignored by Git and overrides the corresponding
-values in `.env`:
+into `.env.development.local`:
 
 ```dotenv
 SUPABASE_URL=http://localhost:54321
 SUPABASE_API_KEY=<local-publishable-or-anon-key>
 ```
 
-Start the server with `pnpm start:dev`. If `SUPABASE_URL` is unset, it uses
-`https://<SUPABASE_PROJECT_ID>.supabase.co` instead.
+Run `pnpm start:dev` to connect the server to local Supabase. To run in
+production mode with the hosted values from `.env`, build first with
+`pnpm build`, then run `pnpm start:prod`.
 
 ### Reset the local database
 

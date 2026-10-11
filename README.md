@@ -274,24 +274,56 @@ For the scope of this project (and for the sake of me getting some sleep), let's
 
 ### Requirements
 
-- [Node.js](https://nodejs.org/en/) (built on v20.0.14)
-- [Pnpm](https://pnpm.io/) (built on v9.1.4)
+- [Node.js](https://nodejs.org/en/) (built on v26.11.1)
+- [Pnpm](https://pnpm.io/) (built on v12.11.2)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Installation
 
 ```bash
-$ git clone https://github.com/wolfpilot/galactic-adventures-server.git
-$ cd galactic-adventures-server
-$ pnpm install
+git clone https://github.com/wolfpilot/galactic-adventures-server.git
+cd galactic-adventures-server
+pnpm install
 ```
 
-### Steps
+### Environment
+
+Create a `.env` file using `.env.example` as a guide, and fill in the app
+settings you need, including your Stripe keys. Local Supabase settings go in
+`.env.local`, as shown below.
+
+### Setting up and seeding your local DB
+
+Start Docker Desktop, then run:
 
 ```bash
-# 1. Update your env config, see .env.example for guidance.
+pnpm exec supabase start
+pnpm exec supabase status
+```
 
-# 2. Run the API service
-$ pnpm start:dev
+The first command starts PostgreSQL and the Supabase API in Docker. On a fresh
+database, it applies the initial migration and loads `supabase/seed.sql`
+automatically. The seed contains the app's `public` table data; it does not
+include auth data, Storage metadata, or Storage files.
+
+Copy the **API URL** and **publishable (or anon) key** from `supabase status`
+into `.env.local`. This file is ignored by Git and overrides the corresponding
+values in `.env`:
+
+```dotenv
+SUPABASE_URL=http://localhost:54321
+SUPABASE_API_KEY=<local-publishable-or-anon-key>
+```
+
+Start the server with `pnpm start:dev`. If `SUPABASE_URL` is unset, it uses
+`https://<SUPABASE_PROJECT_ID>.supabase.co` instead.
+
+### Reset the local database
+
+To discard local database changes and reload the migration and seed, run:
+
+```bash
+pnpm exec supabase db reset
 ```
 
 ## Resources

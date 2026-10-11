@@ -13,7 +13,7 @@ export type StarDetails = Pick<
   "spectral_class_id" | "life_cycle" | "mass"
 > & {
   spectral_class: StarMetaSpectralClassDetails | null
-  atmosphere: ExtWayAtmospheres
+  atmosphere: ExtWayAtmospheres | null
 }
 
 export interface Star extends WaypointBase {

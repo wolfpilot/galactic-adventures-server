@@ -14,9 +14,9 @@ const app = express()
 app.use(cors())
 
 // Request validator
-app.put("/*", contentTypeValidator("application/json"))
-app.post("/*", contentTypeValidator("application/json"))
-app.patch("/*", contentTypeValidator("application/json"))
+app.put("/{*splat}", contentTypeValidator("application/json"))
+app.post("/{*splat}", contentTypeValidator("application/json"))
+app.patch("/{*splat}", contentTypeValidator("application/json"))
 
 // Body parser
 app.use(express.json())
